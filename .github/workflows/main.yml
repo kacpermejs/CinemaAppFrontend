@@ -22,5 +22,5 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          ng build --configuration=production --base-href https://kacpermejs.github.io/<github-repo-name>/
+          ng build --configuration=production --base-href https://kacpermejs.github.io/CinemaAppFrontend/
           npx ngh --dir=dist/cinema-app-frontend --no-silent --message="Deployed to GitHub Pages"
