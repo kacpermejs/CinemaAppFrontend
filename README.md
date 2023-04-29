@@ -1,2 +1,2 @@
 # CinemaAppFrontend
-Nasze super projekt, życie jest super piękne, kochamy ludzi :)
+Nasz super projekt, życie jest super piękne, kochamy ludzi :)
