@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+ename: Deploy to GitHub Pages
 
 on:
   push:
@@ -22,5 +22,5 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          ng build --configuration=production --base-href https://<github-username>.github.io/<github-repo-name>/
+          ng build --configuration=production --base-href https://kacpermejs.github.io/<github-repo-name>/
           npx ngh --dir=dist/cinema-app-frontend --no-silent --message="Deployed to GitHub Pages"
