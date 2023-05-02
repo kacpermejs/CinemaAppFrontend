@@ -1,26 +1,38 @@
-name: Deploy to GitHub Pages
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2.1.4
-        with:
-          node-version: '19.3.0'
+    - name: Setup Node.js
+      uses: actions/setup-node@v2.4.4
+      with:
+        node-version: '18.x'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Build and Deploy
-        run: |
-          ng build --configuration=production --base-href https://kacpermejs.github.io/CinemaAppFrontend/
-          npx ngh --dir=dist/cinema-app-frontend --no-silent --message="Deployed to GitHub Pages"
+    - name: Build Angular App
+      run: npm build
+
+    - name: Test Angular App
+      run: npm test
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GH_PAGES_TOKEN }}
+        publish_dir: ./dist/cinema-app-frontend

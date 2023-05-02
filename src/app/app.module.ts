@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { SharedMaterialModule } from './shared/shared.material.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
-    MatToolbarModule
+    SharedMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
