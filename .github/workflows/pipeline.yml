@@ -31,7 +31,7 @@ jobs:
       run: npm install
 
     - name: Build Angular App
-      run: npm build
+      run: npm run build
 
     - name: Test Angular App
       run: npm test
