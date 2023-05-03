@@ -1,4 +1,44 @@
 <mat-toolbar color="primary">
+  <button
+    type="button"
+    aria-label="Toggle sidenav"
+    mat-icon-button
+    (click)="drawer.toggle()"
+    *ngIf="isHandset$ | async">
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <span>Cinema</span>
+  <span class="menu-spacer"></span>
+  <div *ngIf="(isHandset$ | async) === false">
+    <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
+    <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
+  </div>
+
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+      #drawer
+      class="sidenav"
+      fixedInViewport="false"
+      [ngStyle]="{ 'display': (isHandset$ | async) ? 'block' : 'none' }"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="'push'">
+      <mat-nav-list>
+        <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
+        <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
+      </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+
+
+<!-- <mat-toolbar color="primary" view>
   <mat-toolbar-row>
     <button mat-icon-button (click)="sidenav.toggle()" fxShow="true" fxHide.gt-sm>
       <mat-icon>menu</mat-icon>
@@ -6,7 +46,6 @@
     <span>Cinema</span>
     <span class="menu-spacer"></span>
     <div fxShow="true" fxHide.lt-md>
-      <!-- The following menu items will be hidden on both SM and XS screen sizes -->
       <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
       <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
     </div>
@@ -14,7 +53,7 @@
 </mat-toolbar>
 
 <mat-sidenav-container fxFlexFill>
-  <mat-sidenav #sidenav>
+  <mat-sidenav #sidenav class="sidenav">
     <mat-nav-list>
       <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
       <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
@@ -23,4 +62,4 @@
   <mat-sidenav-content fxFlexFill>
     <ng-content></ng-content>
   </mat-sidenav-content>
-</mat-sidenav-container>
+</mat-sidenav-container> -->
