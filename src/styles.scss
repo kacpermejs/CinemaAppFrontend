@@ -18,8 +18,8 @@ $my-theme-light: mat.define-light-theme(
 $my-theme-dark: mat.define-dark-theme(
   (
     color: (
-      primary: mat.define-palette(mat.$deep-purple-palette, A200),
-      accent: mat.define-palette(mat.$amber-palette, 300),
+      primary: mat.define-palette(mat.$grey-palette, 900),
+      accent: mat.define-palette(mat.$amber-palette, 700),
     ),
     typography: mat.define-typography-config(),
     density: 0,
@@ -34,5 +34,4 @@ $my-theme-dark: mat.define-dark-theme(
 }
 
 html, body { height: 100%; }
-main { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

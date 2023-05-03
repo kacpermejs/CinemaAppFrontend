@@ -6,12 +6,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { SharedMaterialModule } from './shared/shared.material.module';
+import { MainNavComponent } from './core/main-nav/main-nav.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainNavComponent
   ],
   imports: [
     BrowserModule,
@@ -19,6 +21,7 @@ import { SharedMaterialModule } from './shared/shared.material.module';
     SharedModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
+
   ],
   providers: [
     {
