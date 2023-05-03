@@ -15,3 +15,15 @@
   top: 0;
   z-index: 1;
 }
+
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+.active {
+  filter: brightness(1);
+}
+
+a:not(.active) {
+  filter: brightness(0.5);
+}

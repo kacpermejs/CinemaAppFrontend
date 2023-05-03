@@ -8,6 +8,7 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedMaterialModule } from './shared/shared.material.module';
 import { MainNavComponent } from './core/main-nav/main-nav.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 @NgModule({
@@ -21,6 +22,8 @@ import { MainNavComponent } from './core/main-nav/main-nav.component';
     SharedModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
+    FlexLayoutModule
+
 
   ],
   providers: [
