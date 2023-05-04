@@ -33,6 +33,10 @@ $my-theme-dark: mat.define-dark-theme(
   @include mat.all-component-themes($my-theme-dark);
 }
 
+.button-rounded {
+  border-radius: 50vh !important;
+}
+
 html, body {
   height: 100%;
 }

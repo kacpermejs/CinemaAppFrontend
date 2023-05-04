@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedMaterialModule } from './shared/shared.material.module';
 import { MainNavComponent } from './core/main-nav/main-nav.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 @NgModule({
@@ -22,9 +23,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SharedModule,
     BrowserAnimationsModule,
     SharedMaterialModule,
-    FlexLayoutModule
-
-
+    FlexLayoutModule,
+    ScrollingModule,
   ],
   providers: [
     {

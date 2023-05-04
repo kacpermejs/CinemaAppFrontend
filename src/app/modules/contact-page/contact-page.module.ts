@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ContactPageComponent } from './contact-page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedMaterialModule } from 'src/app/shared/shared.material.module';
+import { NewsletterFormComponent } from './newsletter-form/newsletter-form.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -15,8 +17,13 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedMaterialModule
+    SharedMaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
-  declarations: [ContactPageComponent]
+  declarations: [
+    ContactPageComponent,
+    NewsletterFormComponent
+  ]
 })
 export class ContactPageModule { }

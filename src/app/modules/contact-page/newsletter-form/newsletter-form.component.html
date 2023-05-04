@@ -1,0 +1,22 @@
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name">
+    <mat-error *ngIf="myForm.get('name')?.invalid">Name is required.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+    <mat-error *ngIf="myForm.get('email')?.invalid">Please enter a valid email address.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Message</mat-label>
+    <textarea matInput formControlName="message"></textarea>
+  </mat-form-field>
+
+  <mat-checkbox formControlName="subscribe">Subscribe to newsletter</mat-checkbox>
+
+  <button mat-raised-button color="primary">Submit</button>
+</form>

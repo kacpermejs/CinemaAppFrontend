@@ -1,5 +1,9 @@
-<div class="container">
-  <mat-toolbar color="primary">
+
+<mat-toolbar mat-scrolling>
+  <mat-toolbar-row>
+
+  </mat-toolbar-row>
+  <mat-toolbar-row>
     <button
       type="button"
       aria-label="Toggle sidenav"
@@ -8,31 +12,32 @@
       *ngIf="isHandset$ | async">
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
-    <span>Cinema</span>
+    <span routerLink="/home">Cinema</span>
     <span class="menu-spacer"></span>
     <div *ngIf="(isHandset$ | async) === false">
       <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
       <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
     </div>
+  </mat-toolbar-row>
 
-  </mat-toolbar>
 
-  <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav
-        #drawer
-        [ngStyle]="{ 'display': (isHandset$ | async) ? 'block' : 'none' }"
-        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-        [mode]="'push'">
-        <mat-nav-list>
-          <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
-          <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
-        </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <ng-content></ng-content>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+      #drawer
+      [ngStyle]="{ 'display': (isHandset$ | async) ? 'block' : 'none' }"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="'push'">
+      <mat-nav-list>
+        <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
+        <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
+      </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
 
 
 

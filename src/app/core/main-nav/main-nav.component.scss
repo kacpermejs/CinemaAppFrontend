@@ -1,9 +1,3 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
 mat-sidenav-container {
   flex: 1;
 }
@@ -12,12 +6,17 @@ mat-sidenav {
   width: 200px;
 }
 
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+}
 
-// .mat-toolbar.mat-primary {
-//   position: sticky;
-//   top: 0;
-//   z-index: 10;
-// }
+
+mat-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
 .menu-spacer {
   flex: 1 1 auto;
