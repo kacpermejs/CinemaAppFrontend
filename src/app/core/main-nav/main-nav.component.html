@@ -1,39 +1,40 @@
-<mat-toolbar color="primary">
-  <button
-    type="button"
-    aria-label="Toggle sidenav"
-    mat-icon-button
-    (click)="drawer.toggle()"
-    *ngIf="isHandset$ | async">
-    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-  </button>
-  <span>Cinema</span>
-  <span class="menu-spacer"></span>
-  <div *ngIf="(isHandset$ | async) === false">
-    <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
-    <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
-  </div>
+<div class="container">
+  <mat-toolbar color="primary">
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      *ngIf="isHandset$ | async">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+    <span>Cinema</span>
+    <span class="menu-spacer"></span>
+    <div *ngIf="(isHandset$ | async) === false">
+      <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
+      <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
+    </div>
 
-</mat-toolbar>
+  </mat-toolbar>
 
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav
-      #drawer
-      class="sidenav"
-      fixedInViewport="false"
-      [ngStyle]="{ 'display': (isHandset$ | async) ? 'block' : 'none' }"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="'push'">
-      <mat-nav-list>
-        <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
-        <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
-      </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+        #drawer
+        [ngStyle]="{ 'display': (isHandset$ | async) ? 'block' : 'none' }"
+        [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+        [mode]="'push'">
+        <mat-nav-list>
+          <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
+          <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
 
-    <ng-content></ng-content>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+
 
 
 
