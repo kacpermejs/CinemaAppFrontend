@@ -33,3 +33,41 @@ a:not(.active) {
 mat-sidenav mat-nav-list {
   padding: 0px;
 }
+
+form {
+  max-width: 30em;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1em;
+
+}
+
+.main-menu-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.brand-left {
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.menu-buttons {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-right {
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  min-width: 120px;
+  max-width: 120px;
+}

@@ -1,26 +1,26 @@
 
-<mat-toolbar mat-scrolling>
-  <mat-toolbar-row>
-
-  </mat-toolbar-row>
-  <mat-toolbar-row>
-    <button
-      type="button"
-      aria-label="Toggle sidenav"
-      mat-icon-button
-      (click)="drawer.toggle()"
-      *ngIf="isHandset$ | async">
-      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-    </button>
-    <span routerLink="/home">Cinema</span>
-    <span class="menu-spacer"></span>
-    <div *ngIf="(isHandset$ | async) === false">
+<mat-toolbar>
+  <mat-toolbar-row class="main-menu-toolbar">
+    <div class="brand-left">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span routerLink="/home">Cinema</span>
+    </div>
+    <div class="menu-buttons" *ngIf="(isHandset$ | async) === false">
       <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
       <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
     </div>
+    <div class="menu-right">
+      <button mat-raised-button color="accent">Login</button>
+    </div>
+
   </mat-toolbar-row>
-
-
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
@@ -35,7 +35,9 @@
       </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+
     <ng-content></ng-content>
+
   </mat-sidenav-content>
 </mat-sidenav-container>
 

@@ -6,16 +6,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedMaterialModule } from './shared/shared.material.module';
+import { SharedMaterialModule } from './shared/material.module';
 import { MainNavComponent } from './core/main-nav/main-nav.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {ScrollingModule} from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainNavComponent
+    MainNavComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,6 +27,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     SharedMaterialModule,
     FlexLayoutModule,
     ScrollingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

@@ -6,10 +6,6 @@ app-main-nav {
   justify-content:space-between;
 }
 
-main {
-  flex-grow: 1;
-  padding: 1em;
-}
 .footer {
   min-height: 100px;
   display: flex;
@@ -17,4 +13,7 @@ main {
   justify-content: center;
 }
 
+main {
+  flex-grow: 1;
+}
 
