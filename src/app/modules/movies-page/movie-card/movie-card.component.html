@@ -1,12 +1,32 @@
 <mat-card class="my-card">
   <div class="card-image">
-    <img [src]="data.image" alt="Card Image" />
+    <img [src]="data.imageUrl" alt="Card Image" />
   </div>
   <div class="card-content">
     <mat-card-title>{{ data.title }}</mat-card-title>
-    <mat-card-subtitle>{{ data.subtitle }}</mat-card-subtitle>
+    <mat-card-subtitle>
+      <div class="details">
+
+        {{ data.date.getFullYear() }}
+        <span class="detail-spacer"> | </span>
+        {{ data.age }}
+
+        <div class="detail" *ngFor="let detail of data.details">
+          <span class="detail-spacer"> | </span>
+          {{detail}}
+        </div>
+
+      </div>
+    </mat-card-subtitle>
     <mat-card-content>{{ data.description }}</mat-card-content>
     <div class="content-spacer"></div>
-    <button mat-raised-button color="primary" [routerLink]="data.buttonLink">{{ data.buttonText }}</button>
+    <div class="screening-container">
+      <button *ngFor="let screening of screenings" mat-raised-button color="primary" disabled="{{!screening.available}}" class="screening" routerLink="#">
+        17:15<br>
+        <small>
+          2D, Napisy
+        </small>
+      </button>
+    </div>
   </div>
 </mat-card>
