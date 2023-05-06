@@ -7,10 +7,12 @@
 }
 
 .card-image {
-  flex-shrink: 1;
+  flex: 0 0 25%;
   max-width: 25%;
   height: 100%; // make sure the container takes up full height of parent
   display: flex;
+  justify-content: center;
+  align-items: center;
   margin-right: 1rem;
 }
 
@@ -24,7 +26,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: 15rem;
+  //height: 15rem;
 }
 
 mat-card-content {
@@ -38,6 +40,7 @@ mat-card-content {
   }
 
   .card-image {
+    flex: 0 0 auto;
     max-width: 50%;
   }
 }
@@ -47,6 +50,37 @@ mat-card-content {
   flex-basis: auto;
 }
 
-button {
-  align-self: flex-end;
+.screening-container{
+  margin-top: 1rem;
+  align-self: flex-start;
+
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.screening {
+  height: 3rem !important;
+  width: 5rem !important;
+  line-height: normal;
+  overflow: hidden;
+
+  small{
+    font-size: 6px;
+  }
+}
+
+.details {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.detail-spacer {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.detail {
+
 }

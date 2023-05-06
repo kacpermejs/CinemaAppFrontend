@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 
-interface MovieCardData {
+export interface MovieCardData {
   image: string;
   title: string
   subtitle: string;
@@ -10,6 +10,39 @@ interface MovieCardData {
   buttonLink: string;
 }
 
+export interface MovieData {
+  imageUrl: string;
+  title: string;
+  date: Date;
+  durationMinutes: number;
+  age: string;
+  details: string[];
+  rating?: number;
+  description: string;
+}
+
+export interface IScreening {
+  date: Date;
+  hour: string;
+  minute: string;
+  available: boolean;
+}
+
+class Screening implements IScreening {
+  date: Date;
+  available: boolean;
+
+  constructor(date: Date, available: boolean) {
+    this.date = date;
+    this.available = available;
+  }
+  get hour(): string {
+    return this.date.getHours().toString();
+  }
+  get minute(): string {
+    return this.date.getMinutes().toString();
+  }
+}
 
 @Component({
   selector: 'app-movie-card',
@@ -18,14 +51,23 @@ interface MovieCardData {
 })
 export class MovieCardComponent implements OnInit {
 
-  data: MovieCardData = {
-    image: 'https://via.placeholder.com/150x200',
-    title: 'Card Title',
-    subtitle: 'Card Subtitle',
-    description: 'This is a card description. It can be quite long and wrap to multiple lines if necessary.',
-    buttonText: 'Click me',
-    buttonLink: 'https://example.com'
+  data: MovieData = {
+    imageUrl: 'https://via.placeholder.com/150x200',
+    title: 'GWIEZDNE WOJNY: CZĘŚĆ V - IMPERIUM KONTRATAKUJE (WERSJA ORYGINALNA)',
+    date: new Date(1980, 4, 17),
+    durationMinutes: 120,
+    age: '7+',
+    details: ['sci-fi', 'adventure'],
+    rating: 9.7,
+    description: 'UWAGA: Film jest wyświetlany w wersji oryginalnej bez polskich napisów. Imperator rozkazuje swojemu uczniowi Darthowi Vaderowi odnalezienie Luke\'a Skywalkera, by zmusić go do przejścia na ciemną stronę Mocy.',
   };
+
+  screenings: IScreening[] =
+  [
+    new Screening(new Date(), true),
+    new Screening(new Date(), false),
+    new Screening(new Date(), false),
+  ];
 
   constructor() { }
 
