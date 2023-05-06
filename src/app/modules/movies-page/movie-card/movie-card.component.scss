@@ -1,0 +1,52 @@
+.my-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  padding: 20px;
+}
+
+.card-image {
+  flex-shrink: 1;
+  max-width: 25%;
+  height: 100%; // make sure the container takes up full height of parent
+  display: flex;
+  margin-right: 1rem;
+}
+
+.card-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 15rem;
+}
+
+mat-card-content {
+
+  padding: 0;
+}
+
+@media screen and (max-width: 600px) {
+  mat-card-content {
+    display: none;
+  }
+
+  .card-image {
+    max-width: 50%;
+  }
+}
+
+.content-spacer {
+  flex-grow: 1;
+  flex-basis: auto;
+}
+
+button {
+  align-self: flex-end;
+}

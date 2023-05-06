@@ -13,13 +13,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
     CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatToolbarModule
   ],
   declarations: [],
   exports: [
@@ -39,6 +38,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatExpansionModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatGridListModule,
+    MatCardModule
   ]
 })
 export class SharedMaterialModule {

@@ -1,0 +1,12 @@
+<mat-card class="my-card">
+  <div class="card-image">
+    <img [src]="data.image" alt="Card Image" />
+  </div>
+  <div class="card-content">
+    <mat-card-title>{{ data.title }}</mat-card-title>
+    <mat-card-subtitle>{{ data.subtitle }}</mat-card-subtitle>
+    <mat-card-content>{{ data.description }}</mat-card-content>
+    <div class="content-spacer"></div>
+    <button mat-raised-button color="primary" [routerLink]="data.buttonLink">{{ data.buttonText }}</button>
+  </div>
+</mat-card>
