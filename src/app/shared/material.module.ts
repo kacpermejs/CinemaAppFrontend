@@ -15,6 +15,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -39,7 +41,9 @@ import { MatCardModule } from '@angular/material/card';
     MatDialogModule,
     MatAutocompleteModule,
     MatGridListModule,
-    MatCardModule
+    MatCardModule,
+    MatTreeModule,
+    MatSelectModule,
   ]
 })
 export class SharedMaterialModule {

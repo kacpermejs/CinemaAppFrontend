@@ -13,12 +13,27 @@
       <span routerLink="/home">Cinema</span>
     </div>
     <div class="menu-buttons" *ngIf="(isHandset$ | async) === false">
-      <a routerLink="/home" routerLinkActive="active" mat-button>Home</a>
-      <a routerLink="/movies" routerLinkActive="active" mat-button>Movies</a>
-      <a routerLink="/contact" routerLinkActive="active" mat-button>Contact</a>
+      <a class="menu-button" routerLink="/home" routerLinkActive="active" mat-button>Strona główna</a>
+      <a class="menu-button" routerLink="/movies" routerLinkActive="active" mat-button>Repertuar</a>
+      <a class="menu-button" routerLink="/contact" routerLinkActive="active" mat-button>Kontakt</a>
+      <a *ngIf="auth.isLoggedIn()" class="menu-button" routerLink="/ticket-validation" routerLinkActive="active" mat-button>Sprawdzanie Biletów</a>
     </div>
     <div class="menu-right">
-      <button mat-raised-button color="accent">Login</button>
+      <!-- <app-cinema-selection></app-cinema-selection> -->
+      <!-- <small class="cinema-label">
+        {{selectedCinema}}
+      </small> -->
+      <mat-select placeholder="Wybierz kino">
+        <mat-option value="option1">Option 1</mat-option>
+        <mat-option value="option2">Option 2</mat-option>
+        <mat-option value="option3">Option 3</mat-option>
+      </mat-select>
+      <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Zmień</button>
+      <button mat-raised-button color="accent" *ngIf="(!selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Wybierz kino</button> -->
+      <button mat-raised-button color="accent" *ngIf="(!auth.isLoggedIn()) && (isHandset$ | async) === false" (click)="auth.login()">Login</button>
+      <button mat-raised-button color="accent" *ngIf="(auth.isLoggedIn()) && (isHandset$ | async) === false" (click)="auth.logout()">Logout</button>
+
+
     </div>
 
   </mat-toolbar-row>
@@ -31,9 +46,15 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="'push'">
       <mat-nav-list>
-        <a routerLink="/home" routerLinkActive="active" mat-list-item>Home</a>
-        <a routerLink="/movies" routerLinkActive="active" mat-list-item>Movies</a>
-        <a routerLink="/contact" routerLinkActive="active" mat-list-item>Contact</a>
+        <a routerLink="/home" routerLinkActive="active" mat-list-item>Strona główna</a>
+        <a routerLink="/movies" routerLinkActive="active" mat-list-item>Repertuar</a>
+        <a routerLink="/contact" routerLinkActive="active" mat-list-item>Kontakt</a>
+        <a *ngIf="auth.isLoggedIn()" class="menu-button" routerLink="/ticket-validation" routerLinkActive="active" mat-button>Sprawdzanie Biletów</a>
+
+        <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema)" (click)="openCinemaDialog()">Zmień</button>
+        <button mat-raised-button color="accent" *ngIf="(!selectedCinema)" (click)="openCinemaDialog()">Wybierz kino</button> -->
+        <button mat-raised-button color="accent" style="margin-left: 1rem;" *ngIf="(!auth.isLoggedIn())" (click)="auth.login()">Login</button>
+        <button mat-raised-button color="accent" style="margin-left: 1rem;" *ngIf="(auth.isLoggedIn())" (click)="auth.logout()">Logout</button>
       </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

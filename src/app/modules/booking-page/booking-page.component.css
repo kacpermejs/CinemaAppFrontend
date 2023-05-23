@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.hall {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.seat {
+  background-color: darkslategrey;
+  text-align: center;
+  border: 1px solid black;
+  margin: 2px;
+  width: 40px;
+  height: 40px;
+}
+
+.free {
+  background-color: rgb(65, 213, 16);
+}
+
+.occupied {
+  background-color: rgb(205, 17, 17);
+}

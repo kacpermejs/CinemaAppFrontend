@@ -1,27 +1,33 @@
 <mat-card class="my-card">
   <div class="card-image">
-    <img [src]="data.imageUrl" alt="Card Image" />
+    <img [src]="movieData?.imageUrl" alt="Card Image" />
   </div>
   <div class="card-content">
-    <mat-card-title>{{ data.title }}</mat-card-title>
+    <mat-card-title>{{ movieData?.title }}</mat-card-title>
     <mat-card-subtitle>
       <div class="details">
 
-        {{ data.date.getFullYear() }}
+        {{ movieData?.date?.getFullYear() }}
         <span class="detail-spacer"> | </span>
-        {{ data.age }}
+        {{ movieData?.age }}
 
-        <div *ngFor="let detail of data.details">
+        <div *ngFor="let detail of movieData?.details">
           <span class="detail-spacer"> | </span>
           {{detail}}
         </div>
 
       </div>
     </mat-card-subtitle>
-    <mat-card-content>{{ data.description }}</mat-card-content>
+    <mat-card-content>{{ movieData?.description }}</mat-card-content>
     <div class="content-spacer"></div>
     <div class="screening-container">
-      <button *ngFor="let screening of screenings" mat-raised-button color="primary" disabled="{{!screening.available}}" class="screening" routerLink="#">
+
+      <button *ngFor="let screening of screenings"
+              mat-raised-button
+              color="primary"
+              disabled="{{!screening.available}}"
+              class="screening"
+              routerLink="booking/{{movieData?.id}}/{{screening.id}}">
         17:15<br>
         <small>
           2D, Napisy

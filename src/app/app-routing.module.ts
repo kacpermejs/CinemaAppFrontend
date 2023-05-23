@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/ticket-guard/AuthGuard';
 
 const routes: Routes = [
   {
@@ -22,6 +23,18 @@ const routes: Routes = [
     loadChildren: () => import('./modules/contact-page/contact-page.module')
       .then(m => m.ContactPageModule)
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./modules/login-page/login-page.module')
+      .then(m => m.LoginPageModule)
+  },
+  {
+    path: 'ticket-validation',
+    loadChildren: () => import('./modules/ticket-validation-page/ticket-validation-page.module')
+      .then(m => m.TicketValidationPageModule),
+    canActivate: [AuthGuard]
+  },
+
 ];
 
 @NgModule({

@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CinemaServiceService, MovieWithScreening } from 'src/app/core/cinema-service/cinema-service.service';
+
+interface PlayedMovie {
+
+}
 
 @Component({
   selector: 'app-movies-page',
@@ -16,7 +22,11 @@ export class MoviesPageComponent implements OnInit {
     { src: 'https://via.placeholder.com/300x300', alt: 'Image 6' },
   ];
 
-  constructor() { }
+  movies: Observable<MovieWithScreening[]>;
+
+  constructor(private cinemaService: CinemaServiceService) {
+    this.movies = this.cinemaService.getMoviesWithTheirScreenings(1);
+  }
 
   ngOnInit() {
   }

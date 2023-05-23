@@ -1,0 +1,17 @@
+
+<div class="container">
+
+  <div class="hall">
+
+    <div *ngFor="let rows of seats" >
+      <div class="row">
+        <div *ngFor="let seat of rows" >
+          <div class="seat" [ngClass]="{'free': !seat.occupied, 'occupied': seat.occupied}">{{seat.occupied}}</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+

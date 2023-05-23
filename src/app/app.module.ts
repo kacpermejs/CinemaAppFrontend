@@ -12,12 +12,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CinemaSelectionComponent } from './core/main-nav/cinema-selection/cinema-selection.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     MainNavComponent,
+    CinemaSelectionComponent
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomePageComponent implements OnInit {
 
+  images = [
+    { src: 'https://via.placeholder.com/300x300', alt: 'Image 1' },
+    { src: 'https://via.placeholder.com/300x300', alt: 'Image 2' },
+    { src: 'https://via.placeholder.com/300x300', alt: 'Image 3' },
+    { src: 'https://via.placeholder.com/300x300', alt: 'Image 4' },
+    { src: 'https://via.placeholder.com/300x300', alt: 'Image 5' },
+    { src: 'https://via.placeholder.com/300x300', alt: 'Image 6' },
+  ];
+
   constructor() { }
 
   ngOnInit() {

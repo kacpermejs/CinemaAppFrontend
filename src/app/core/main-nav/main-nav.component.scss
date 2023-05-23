@@ -3,7 +3,7 @@ mat-sidenav-container {
 }
 
 mat-sidenav {
-  width: 200px;
+  width: 250px;
 }
 
 mat-sidenav-content {
@@ -45,29 +45,47 @@ form {
 .main-menu-toolbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .brand-left {
-  flex-shrink: 1;
+  flex-shrink: 3;
   display: flex;
   align-items: center;
   justify-content: left;
-  min-width: 120px;
-  max-width: 120px;
+  flex-basis: 250px;
+  gap: 5px;
+  height: 80px;
 }
 
 .menu-buttons {
   flex-grow: 1;
+  flex-shrink: 1;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.menu-button {
+  
+}
+
 .menu-right {
-  flex-shrink: 1;
+  flex-shrink: 3;
   display: flex;
   align-items: center;
   justify-content: right;
-  min-width: 120px;
-  max-width: 120px;
+  flex-basis: 250px;
+  height: 80px;
+  gap: 5px;
+}
+
+.mat-toolbar-row {
+  height: 80px;
+}
+
+.cinema-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
