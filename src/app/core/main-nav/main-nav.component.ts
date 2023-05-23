@@ -6,6 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { CinemaSelectionComponent } from './cinema-selection/cinema-selection.component';
 import { AuthService } from '../auth-service/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,11 @@ export class MainNavComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog, public auth: AuthService) {}
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    public dialog: MatDialog,
+    public auth: AuthService,
+    public router: Router) {}
 
   openCinemaDialog(): void {
     const dialogRef = this.dialog.open(CinemaSelectionComponent, {

@@ -30,9 +30,11 @@
       </mat-select>
       <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Zmień</button>
       <button mat-raised-button color="accent" *ngIf="(!selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Wybierz kino</button> -->
-      <button mat-raised-button color="accent" *ngIf="(!auth.isLoggedIn()) && (isHandset$ | async) === false" (click)="auth.login()">Login</button>
-      <button mat-raised-button color="accent" *ngIf="(auth.isLoggedIn()) && (isHandset$ | async) === false" (click)="auth.logout()">Logout</button>
-
+      <button
+      mat-raised-button color="accent" *ngIf="(isHandset$ | async) === false"
+      (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
+        {{auth.isLoggedIn() ? 'Logout' : 'Login'}}
+      </button>
 
     </div>
 
@@ -49,7 +51,11 @@
         <a routerLink="/home" routerLinkActive="active" mat-list-item>Strona główna</a>
         <a routerLink="/movies" routerLinkActive="active" mat-list-item>Repertuar</a>
         <a routerLink="/contact" routerLinkActive="active" mat-list-item>Kontakt</a>
-        <a *ngIf="auth.isLoggedIn()" class="menu-button" routerLink="/ticket-validation" routerLinkActive="active" mat-button>Sprawdzanie Biletów</a>
+        <a *ngIf="auth.isLoggedIn()"
+           class="menu-button"
+           routerLink="/ticket-validation"
+           routerLinkActive="active"
+           mat-list-item>Sprawdzanie Biletów</a>
 
         <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema)" (click)="openCinemaDialog()">Zmień</button>
         <button mat-raised-button color="accent" *ngIf="(!selectedCinema)" (click)="openCinemaDialog()">Wybierz kino</button> -->
