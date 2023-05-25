@@ -7,7 +7,7 @@ import { ISeat } from 'src/app/core/models/ISeat';
 @Component({
   selector: 'app-booking-page',
   templateUrl: './booking-page.component.html',
-  styleUrls: ['./booking-page.component.css']
+  styleUrls: ['./booking-page.component.scss']
 })
 export class BookingPageComponent implements OnInit {
 

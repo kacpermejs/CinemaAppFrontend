@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width: 1000px) {
+
+  .container .item {
+
+    min-width: 100%;
+
+  }
+}
+
+.selected-seats {
+  flex: 1 0 0;
+}
+
+.order-summary {
+  min-width: 100%;
+}
+
+.seats {
+  display: flex;
+  justify-content: center;
+
+  .wrapper {
+    overflow: auto;
+
+    .screen {
+      width: 100%;
+      border-top: #ccc 1px solid;
+      text-align: center;
+    }
+
+    .cinema-layout-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: auto;
+
+      .cinema-row {
+        display: flex;
+        gap: 5px;
+
+        .seat {
+          min-width: 40px;
+          aspect-ratio: 1/1;
+          background-color: #ccc;
+          border-radius: 5px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          &.free {
+            background-color: rgb(65, 213, 16);
+          }
+
+          &.occupied {
+            background-color: rgb(205, 17, 17);
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+.list {
+  flex-grow: 1;
+}
+
+
+
+
+
+/* .hall {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: scroll;
+}
+
+.hall2 {
+  max-width: 300px;
+  overflow-x: scroll;
+  background-color: cornflowerblue;
+}
+
+.hall3 {
+  background-color: cornflowerblue;
+  display: flex;
+  justify-content: center;
+} */
+
+/* .row {
+  width: inherit;
+  overflow: scroll;
+  display: flex;
+}
+
+.seat {
+  background-color: darkslategrey;
+  text-align: center;
+  margin: 2px;
+  width: 2rem;
+  aspect-ratio: 1/1;
+} */

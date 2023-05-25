@@ -30,9 +30,10 @@
       </mat-select>
       <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Zmień</button>
       <button mat-raised-button color="accent" *ngIf="(!selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Wybierz kino</button> -->
-      <button
-      mat-raised-button color="accent" *ngIf="(isHandset$ | async) === false"
-      (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
+      <button mat-raised-button
+              color="accent"
+              *ngIf="(isHandset$ | async) === false"
+              (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
         {{auth.isLoggedIn() ? 'Logout' : 'Login'}}
       </button>
 
@@ -59,8 +60,11 @@
 
         <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema)" (click)="openCinemaDialog()">Zmień</button>
         <button mat-raised-button color="accent" *ngIf="(!selectedCinema)" (click)="openCinemaDialog()">Wybierz kino</button> -->
-        <button mat-raised-button color="accent" style="margin-left: 1rem;" *ngIf="(!auth.isLoggedIn())" (click)="auth.login()">Login</button>
-        <button mat-raised-button color="accent" style="margin-left: 1rem;" *ngIf="(auth.isLoggedIn())" (click)="auth.logout()">Logout</button>
+        <button mat-raised-button
+                color="accent"
+                (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
+          {{auth.isLoggedIn() ? 'Logout' : 'Login'}}
+        </button>
       </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
