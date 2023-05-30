@@ -1,8 +1,9 @@
-
+import { Location } from "./Location";
 
 
 export interface ISeat {
   occupied: boolean;
-  row: string;
-  column: string;
+  location: Location;
 }
+
+

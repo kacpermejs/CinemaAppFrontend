@@ -1,5 +1,5 @@
 
 export interface Location {
-  row: string;
-  column: string;
+  row: number;
+  column: number;
 }

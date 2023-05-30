@@ -1,45 +1,62 @@
-
 <mat-card>
   <mat-card-header>
-    Wybór miejsc
+    <mat-card-title>Nazwa filmu</mat-card-title>
+    <mat-card-subtitle>godzina | dzień tygodnia | data</mat-card-subtitle>
   </mat-card-header>
-  <mat-card-content class="container">
+  <mat-card-content></mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-stepper>
+    <mat-step>
+      <ng-template matStepLabel>Wybór miejsc</ng-template>
+      <div class="seats">
+        <div class="wrapper">
+          <div class="screen">Ekran</div>
+          <div class="cinema-layout-grid">
 
-    <div class="seats item">
-
-      <div class="wrapper">
-        <div class="screen">Ekran</div>
-        <div class="cinema-layout-grid">
-
-          <div *ngFor="let rows of seats" class="cinema-row">
-            <div
-              *ngFor="let seat of rows"
-              class="seat"
-              [ngClass]="{'free': !seat.occupied, 'occupied': seat.occupied}">
-              {{seat.occupied}}
+            <div *ngFor="let row of seats; let rowNum = index" class="cinema-row">
+              <div *ngFor="let seat of row; let colNum = index">
+                <div *ngIf="isEmptySpace(seat)" class="seat empty-space"></div>
+                <div class="seat"
+                      *ngIf="!isEmptySpace(seat)"
+                      (click)="seatOnClick(seat)"
+                      [ngClass]="{
+                        'free': !seat.occupied,
+                        'occupied': seat.occupied,
+                        'selected': isSelected(seat),
+                        'double-left': isLoveSeat(seat) && isLoveSeatLeft(seat),
+                        'double-right': isLoveSeat(seat) && !isLoveSeatLeft(seat)
+                    }">
+                  {{seat.location.row}}, {{seat.location.column}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <br>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
 
-
-
-    </div>
-
-    <div class="selected-seats item">
+    <mat-step>
+      <ng-template matStepLabel>Bilety</ng-template>
       Bilety:
-      <mat-card>
-        <mat-card-content>
-          Ticket
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <div class="order-summary item">
-      Summary:
-      10zł
-    </div>
-  </mat-card-content>
+      <mat-list class="selected-seats">
+        <mat-list-item *ngFor="let seat of selected" class="ticket">
+          <mat-icon matListItemIcon>receipt</mat-icon>
+          <div>
+            Rząd: {{seat.location.row}}, Miejsce: {{seat.location.column}}
+          </div>
+        </mat-list-item>
+      </mat-list>
+      <br>
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 </mat-card>
-
-
+<br>

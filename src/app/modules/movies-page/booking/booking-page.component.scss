@@ -1,26 +1,14 @@
-.container {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-
-  flex-wrap: wrap;
-}
-
-@media screen and (max-width: 1000px) {
-
-  .container .item {
-
-    min-width: 100%;
-
-  }
-}
-
 .selected-seats {
   flex: 1 0 0;
 }
 
 .order-summary {
   min-width: 100%;
+}
+
+mat-stepper {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .seats {
@@ -32,8 +20,10 @@
 
     .screen {
       width: 100%;
-      border-top: #ccc 1px solid;
+      border-top: rgb(136, 136, 136) 3px solid;
       text-align: center;
+      margin-top: 1em;
+      margin-bottom: 1em;
     }
 
     .cinema-layout-grid {
@@ -44,24 +34,46 @@
 
       .cinema-row {
         display: flex;
-        gap: 5px;
 
         .seat {
           min-width: 40px;
+          margin-left: 2px;
+          margin-right: 2px;
+
           aspect-ratio: 1/1;
-          background-color: #ccc;
           border-radius: 5px;
           display: flex;
           justify-content: center;
           align-items: center;
           cursor: pointer;
 
+          &.double-left {
+            margin-right: 0px;
+            min-width: 42px;
+            border-radius: 5px 0 0 5px;
+          }
+
+          &.double-right {
+            margin-left: 0px;
+            min-width: 42px;
+            border-radius: 0 5px 5px 0;
+          }
+
+          &.empty-space {
+            background-color: rgba(0, 0, 0, 0) !important;
+            color: rgba(0, 0, 0, 0) !important;
+            cursor: default;
+          }
+
           &.free {
-            background-color: rgb(65, 213, 16);
+            background-color: rgb(136, 136, 136);
           }
 
           &.occupied {
             background-color: rgb(205, 17, 17);
+          }
+          &.selected {
+            background-color: rgb(65, 213, 16);
           }
         }
       }
@@ -69,12 +81,10 @@
   }
 }
 
-
-
-
-
-.list {
-  flex-grow: 1;
+.ticket {
+  margin-bottom: 4px;
+  border: 2px solid rgb(34, 34, 34);
+  border-radius: 4px;
 }
 
 

@@ -17,6 +17,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatSelectModule} from '@angular/material/select';
+import {MatStepperModule} from '@angular/material/stepper';
 
 @NgModule({
   imports: [
@@ -44,6 +45,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatCardModule,
     MatTreeModule,
     MatSelectModule,
+    MatStepperModule,
   ]
 })
 export class SharedMaterialModule {
