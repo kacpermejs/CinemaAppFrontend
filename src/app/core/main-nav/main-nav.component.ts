@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CinemaSelectionComponent } from './cinema-selection/cinema-selection.component';
 import { AuthService } from '../auth-service/auth.service';
 import { Router } from '@angular/router';
+import { Cinema, ICinema } from '../models/Cinema';
+import { CinemaServiceService } from '../cinema-service/cinema-service.service';
 
 
 @Component({
@@ -14,9 +16,11 @@ import { Router } from '@angular/router';
   templateUrl: './main-nav.component.html',
   styleUrls: ['./main-nav.component.scss']
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnInit {
 
-  selectedCinema: string = 'Wrocław - Pasaż';
+  selectedCinema?: ICinema;
+
+  cinemas$: Observable<ICinema[]>;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -28,7 +32,14 @@ export class MainNavComponent {
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     public auth: AuthService,
-    public router: Router) {}
+    public cinemaService: CinemaServiceService,
+    public router: Router) {
+      this.cinemas$ = cinemaService.getCinemas();
+    }
+
+  ngOnInit(): void {
+
+  }
 
   openCinemaDialog(): void {
     const dialogRef = this.dialog.open(CinemaSelectionComponent, {

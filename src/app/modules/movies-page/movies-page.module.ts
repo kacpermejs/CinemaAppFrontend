@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedMaterialModule } from 'src/app/shared/material.module';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { BookingPageComponent } from './booking/booking-page.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    SharedMaterialModule
+    SharedMaterialModule,
+    ReactiveFormsModule
   ],
   declarations: [
     MoviesPageComponent,

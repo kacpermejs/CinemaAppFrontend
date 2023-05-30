@@ -3,6 +3,7 @@ import { IScreening } from '../models/IScreening';
 import { Observable, of } from 'rxjs';
 import { Screening } from '../models/Screening';
 import { MovieData } from '../models/MovieData';
+import { Cinema, ICinema } from '../models/Cinema';
 
 export class MovieWithScreening implements MovieData {
   id: number;
@@ -36,6 +37,7 @@ export class MovieWithScreening implements MovieData {
 interface ICinemaService {
   getAllScreenings(cinemaId: number): Observable<IScreening[]>;
   getMoviesWithTheirScreenings(cinemaId: number): Observable<MovieWithScreening[]>;
+  getCinemas(): Observable<ICinema[]>;
 
 }
 
@@ -44,7 +46,22 @@ interface ICinemaService {
 })
 export class CinemaServiceService implements ICinemaService {
 
+  private _selectedCinema?: ICinema;
+
   constructor() { }
+
+  getCinemas(): Observable<ICinema[]> {
+    return this.getCinemasMock();
+  }
+
+  getCinemasMock(): Observable<ICinema[]> {
+    const cinemas = [
+      new Cinema(0, "Wrocław", "Wroclawia"),
+      new Cinema(0, "Wrocław", "Pasaż grunwaldzki"),
+      new Cinema(0, "Warszawa", "Złote tarasy"),
+    ]
+    return of(cinemas)
+  }
 
   getAllScreenings(cinemaId: number): Observable<IScreening[]> {
     return this.getAllScreeningsMock(cinemaId);

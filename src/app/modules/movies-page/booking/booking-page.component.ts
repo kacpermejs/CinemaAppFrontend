@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Seat } from 'src/app/core/models/Seat';
 import { ISeat } from 'src/app/core/models/ISeat';
 import { LoveSeat } from 'src/app/core/models/LoveSeat';
 import { EmptySeatSpace } from 'src/app/core/models/EmptySeatSpace';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
 
 
 
@@ -19,7 +21,12 @@ export class BookingPageComponent implements OnInit {
 
   selected = new Set<ISeat>()
 
-  constructor() {
+  @ViewChild('stepper') stepper?: MatStepper;
+  emailFormGroup = this._formBuilder.group({
+    emailCtrl: ['', Validators.required],
+  });
+
+  constructor(private _formBuilder: FormBuilder, private _matStepperIntl: MatStepperIntl) {
     for (let r = 0; r < 5; r++) {
       this.seats.push([]);
       for (let c = 0; c < 12; c++) {
@@ -68,16 +75,12 @@ export class BookingPageComponent implements OnInit {
     return this.selected.has(seat);
   }
 
-  isAvailable(seat: ISeat): boolean {
-    return true;
-  }
-
   isEmptySpace(seat: ISeat) {
     return seat instanceof EmptySeatSpace;
   }
 
   select(seat: ISeat) {
-    if (!this.isSelected(seat) && this.isAvailable(seat)) {
+    if (!this.isSelected(seat) && !seat.occupied) {
       this.selected.add(seat);
     }
   }
@@ -88,7 +91,7 @@ export class BookingPageComponent implements OnInit {
     }
   }
 
-  nextSeat(seat: Seat): ISeat | undefined {
+  nextSeat(seat: ISeat): ISeat | undefined {
     let coords = this.findIndexes(seat)
 
     if(coords) {
@@ -123,7 +126,6 @@ export class BookingPageComponent implements OnInit {
     }
   }
 
-
   seatOnClick(seat: ISeat) {
 
     if (this.isSelected(seat)) {
@@ -151,7 +153,27 @@ export class BookingPageComponent implements OnInit {
         this.select(seat)
       }
     }
+  }
 
+  checkSeatSelection(): boolean {
+    return this.selected.size <= 0
+  }
+
+  isStepperValid(): boolean {
+    return this.emailFormGroup.valid &&
+           this.checkSeatSelection();
+  }
+
+  submit() {
+    //check validity
+    if (this.emailFormGroup.valid &&
+        this.checkSeatSelection()) { //valid
+      //reservation post call
+
+    } else { //invalid
+      //show message and redirection to the beginning
+
+    }
 
   }
 
