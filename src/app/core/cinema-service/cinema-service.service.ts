@@ -50,6 +50,23 @@ export class CinemaServiceService implements ICinemaService {
 
   constructor() { }
 
+  setCinema(cinema: ICinema): void {
+    console.log("Cinema has been set!");
+    this._selectedCinema = cinema;
+  }
+
+  get isCinemaSet(): boolean {
+    return this._selectedCinema ? true : false;
+  }
+
+  getSelectedCinema(): ICinema | undefined {
+    if (!this._selectedCinema) {
+      //TODO load from local storage
+    }
+
+    return this._selectedCinema; //present or loaded or still undefined
+  }
+
   getCinemas(): Observable<ICinema[]> {
     return this.getCinemasMock();
   }

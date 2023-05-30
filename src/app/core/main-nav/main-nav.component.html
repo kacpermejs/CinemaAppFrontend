@@ -23,7 +23,7 @@
       <!-- <small class="cinema-label">
         {{selectedCinema}}
       </small> -->
-      <mat-select [(ngModel)]="selectedCinema" placeholder="Wybierz kino" name="cinemaSelection">
+      <mat-select [(ngModel)]="selectedCinema" (selectionChange)="saveCinemaSelection()" placeholder="Wybierz kino" name="cinemaSelection">
         <mat-option *ngFor="let cinema of cinemas$ | async" [value]="cinema">
           {{cinema.city}} - {{cinema.name}}
         </mat-option>

@@ -5,6 +5,7 @@ import { LoveSeat } from 'src/app/core/models/LoveSeat';
 import { EmptySeatSpace } from 'src/app/core/models/EmptySeatSpace';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
+import { CinemaServiceService } from 'src/app/core/cinema-service/cinema-service.service';
 
 
 
@@ -26,7 +27,9 @@ export class BookingPageComponent implements OnInit {
     emailCtrl: ['', Validators.required],
   });
 
-  constructor(private _formBuilder: FormBuilder, private _matStepperIntl: MatStepperIntl) {
+  constructor(private _formBuilder: FormBuilder,
+              private _matStepperIntl: MatStepperIntl,
+              private cinemaService: CinemaServiceService) {
     for (let r = 0; r < 5; r++) {
       this.seats.push([]);
       for (let c = 0; c < 12; c++) {
@@ -156,7 +159,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   checkSeatSelection(): boolean {
-    return this.selected.size <= 0
+    return this.selected.size > 0
   }
 
   isStepperValid(): boolean {
@@ -167,14 +170,21 @@ export class BookingPageComponent implements OnInit {
   submit() {
     //check validity
     if (this.emailFormGroup.valid &&
-        this.checkSeatSelection()) { //valid
+        this.checkSeatSelection() &&
+        this.cinemaService.isCinemaSet) { //valid
       //reservation post call
+      this.makeReservation();
 
     } else { //invalid
       //show message and redirection to the beginning
 
     }
 
+  }
+
+  makeReservation() {
+    console.log("Making Reservation")
+    const cinema = this.cinemaService.getSelectedCinema();
   }
 
 }

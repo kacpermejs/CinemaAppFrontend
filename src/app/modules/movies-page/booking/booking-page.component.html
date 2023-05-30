@@ -8,7 +8,7 @@
 <br>
 <mat-card>
   <mat-stepper [linear]="true" #stepper>
-    <mat-step [hasError]="checkSeatSelection()">
+    <mat-step [hasError]="!checkSeatSelection()">
       <ng-template matStepLabel>Wybór miejsc</ng-template>
       <div class="seats">
         <div class="wrapper">
@@ -44,7 +44,7 @@
     <mat-step>
       <ng-template matStepLabel>Bilety</ng-template>
       Bilety:
-      <mat-error *ngIf="checkSeatSelection()">Brak wybranych miejsc!</mat-error>
+      <mat-error *ngIf="!checkSeatSelection()">Brak wybranych miejsc!</mat-error>
       <mat-list class="selected-seats">
         <mat-list-item *ngFor="let seat of selected" class="ticket">
           <mat-icon matListItemIcon>receipt</mat-icon>
@@ -56,7 +56,7 @@
       <br>
       <div>
         <button mat-button matStepperPrevious>Wróć</button>
-        <button mat-button matStepperNext [disabled]="checkSeatSelection()">Dalej</button>
+        <button mat-button matStepperNext [disabled]="!checkSeatSelection()">Dalej</button>
       </div>
     </mat-step>
 

@@ -41,6 +41,11 @@ export class MainNavComponent implements OnInit {
 
   }
 
+  saveCinemaSelection() {
+    if (this.selectedCinema)
+      this.cinemaService.setCinema(this.selectedCinema)
+  }
+
   openCinemaDialog(): void {
     const dialogRef = this.dialog.open(CinemaSelectionComponent, {
       width: '300px'
