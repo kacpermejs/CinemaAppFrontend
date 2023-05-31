@@ -87,7 +87,10 @@ mat-stepper {
   border-radius: 4px;
 }
 
-
+.step-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
 
 
 

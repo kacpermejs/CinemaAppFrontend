@@ -36,7 +36,7 @@
         </div>
       </div>
       <br>
-      <div>
+      <div class="step-buttons">
         <button mat-button matStepperNext>Dalej</button>
       </div>
     </mat-step>
@@ -54,7 +54,7 @@
         </mat-list-item>
       </mat-list>
       <br>
-      <div>
+      <div class="step-buttons">
         <button mat-button matStepperPrevious>Wróć</button>
         <button mat-button matStepperNext [disabled]="!checkSeatSelection()">Dalej</button>
       </div>
@@ -72,7 +72,7 @@
           />
         </mat-form-field>
       </form>
-      <div>
+      <div class="step-buttons">
         <button mat-button [disabled]="!isStepperValid()" (click)="submit()">Zarezerwuj</button>
       </div>
     </mat-step>
