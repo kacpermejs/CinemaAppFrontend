@@ -29,7 +29,7 @@
                         'double-left': isLoveSeat(seat) && isLoveSeatLeft(seat),
                         'double-right': isLoveSeat(seat) && !isLoveSeatLeft(seat)
                     }">
-                  <mat-icon *ngIf="isWheelchair(seat)" style="position: relative; opacity: 0.5;">accessible</mat-icon>
+                  <mat-icon *ngIf="isWheelchair(seat)" class="seat-icon">accessible</mat-icon>
                   <span *ngIf="!isWheelchair(seat) && isSelected(seat)">
                     {{seat.location.row}}-{{seat.location.column}}
                   </span>

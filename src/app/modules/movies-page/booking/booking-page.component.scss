@@ -47,6 +47,11 @@ mat-stepper {
           align-items: center;
           cursor: pointer;
 
+          .seat-icon {
+            position: relative;
+            opacity: 0.5;
+          }
+
           &.double-left {
             margin-right: 0px;
             min-width: 42px;
