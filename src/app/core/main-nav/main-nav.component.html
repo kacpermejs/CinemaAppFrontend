@@ -23,7 +23,7 @@
       <!-- <small class="cinema-label">
         {{selectedCinema}}
       </small> -->
-      <mat-select [(ngModel)]="selectedCinema" (selectionChange)="saveCinemaSelection()" placeholder="Wybierz kino" name="cinemaSelection">
+      <mat-select class="cinema-label" [(ngModel)]="selectedCinema" (selectionChange)="saveCinemaSelection()" placeholder="Wybierz kino" name="cinemaSelection">
         <mat-option *ngFor="let cinema of cinemas$ | async" [value]="cinema">
           {{cinema.city}} - {{cinema.name}}
         </mat-option>
@@ -31,6 +31,7 @@
       <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Zmień</button>
       <button mat-raised-button color="accent" *ngIf="(!selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Wybierz kino</button> -->
       <button mat-raised-button
+              class="login-button"
               color="accent"
               *ngIf="(isHandset$ | async) === false"
               (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
@@ -53,7 +54,6 @@
         <a routerLink="/movies" routerLinkActive="active" mat-list-item>Repertuar</a>
         <a routerLink="/contact" routerLinkActive="active" mat-list-item>Kontakt</a>
         <a *ngIf="auth.isLoggedIn()"
-           class="menu-button"
            routerLink="/ticket-validation"
            routerLinkActive="active"
            mat-list-item>Sprawdzanie Biletów</a>
@@ -61,6 +61,7 @@
         <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema)" (click)="openCinemaDialog()">Zmień</button>
         <button mat-raised-button color="accent" *ngIf="(!selectedCinema)" (click)="openCinemaDialog()">Wybierz kino</button> -->
         <button mat-raised-button
+                class="login-button"
                 color="accent"
                 (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
           {{auth.isLoggedIn() ? 'Logout' : 'Login'}}

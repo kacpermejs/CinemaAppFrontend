@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { IScreening } from '../models/IScreening';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
 import { Screening } from '../models/Screening';
 import { MovieData } from '../models/MovieData';
 import { Cinema, ICinema } from '../models/Cinema';
+import { HttpClient } from '@angular/common/http';
+import { ISeat, SeatType } from '../models/ISeat';
+import { Location } from '../models/Location';
+import { Seat } from '../models/Seat';
+import { EmptySeatSpace } from '../models/EmptySeatSpace';
+import { WheelchairSeat } from '../models/WheelchairSeat';
+import { LoveSeat } from '../models/LoveSeat';
 
 export class MovieWithScreening implements MovieData {
   id: number;
@@ -34,6 +41,15 @@ export class MovieWithScreening implements MovieData {
   }
 }
 
+export interface HallData {
+  id: number;
+
+  columns: number;
+  rows: number;
+
+  seats: ISeat[];
+}
+
 interface ICinemaService {
   getAllScreenings(cinemaId: number): Observable<IScreening[]>;
   getMoviesWithTheirScreenings(cinemaId: number): Observable<MovieWithScreening[]>;
@@ -41,41 +57,114 @@ interface ICinemaService {
 
 }
 
+function mapSeatType(inputType: any): SeatType {
+
+  switch(inputType) {
+    case "REGULAR":
+      return SeatType.Regular;
+    case "DOUBLE":
+      return SeatType.LoveSeat;
+    case "DISABLED":
+      return SeatType.Wheelchair;
+    default:
+      return SeatType.Empty;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CinemaServiceService implements ICinemaService {
 
-  private _selectedCinema?: ICinema;
+  private _cinemaDataSubject = new BehaviorSubject<ICinema | undefined>(undefined);
+  private _selectedCinema$: Observable<ICinema | undefined> = this._cinemaDataSubject.asObservable();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   setCinema(cinema: ICinema): void {
     console.log("Cinema has been set!");
-    this._selectedCinema = cinema;
+    this._cinemaDataSubject.next(cinema);
   }
 
   get isCinemaSet(): boolean {
-    return this._selectedCinema ? true : false;
+    return this._cinemaDataSubject.value ? true : false;
   }
 
-  getSelectedCinema(): ICinema | undefined {
-    if (!this._selectedCinema) {
+  getSelectedCinema(): Observable<ICinema | undefined> {
+    if (!this.isCinemaSet) {
       //TODO load from local storage
     }
 
-    return this._selectedCinema; //present or loaded or still undefined
+    return this._selectedCinema$; //present or loaded or still undefined
   }
 
   getCinemas(): Observable<ICinema[]> {
-    return this.getCinemasMock();
+    //return this.getCinemasMock();
+    return this.http.get<any>("http://localhost:8080/api/cinemas").pipe(
+      map(response => {
+        return response.map((item: any) => {
+          return {
+            id: item.id,
+            name: item.name,
+            city: item.address.city
+          } as ICinema;
+        });
+      })
+    );
+  }
+
+
+
+  getHallData(screeningId: number): Observable<HallData> {
+    const hallData = this.http.get<any>("http://localhost:8080/api/all-seats-for?id=" + screeningId).pipe(
+      map((response: any) => {
+        const seatsWithOccupancy = response.seats.map((seatData: any) => {
+          const mappedSeat: ISeat = {
+            id: seatData.seat.id,
+            occupied: seatData.isOccupied,
+            location: {row: seatData.seat.row, column: seatData.seat.column},
+            layoutLocation: {row: seatData.seat.layoutRow, column: seatData.seat.layoutColumn},
+            section: seatData.seat.seatSection,
+            type: mapSeatType(seatData.seat.seatType)
+          };
+          //console.log(mappedSeat);
+
+          switch(mapSeatType(seatData.seat.seatType)) {
+            case SeatType.Regular:
+              return new Seat(mappedSeat);
+            case SeatType.Wheelchair:
+              return new WheelchairSeat(mappedSeat);
+            case SeatType.LoveSeat:
+              return new LoveSeat(mappedSeat, {row: seatData.seat.additionRow, column: seatData.seat.additionColumn});
+            case SeatType.Empty:
+              return new EmptySeatSpace(mappedSeat.layoutLocation.row, mappedSeat.layoutLocation.column);
+            default:
+              return new EmptySeatSpace(mappedSeat.layoutLocation.row, mappedSeat.layoutLocation.column);
+          }
+
+        }) as ISeat[];
+
+        // "additionSeatColumn": 7,
+        // "additionSeatRow": 8,
+        // "additionColumn": 7,
+        // "additionRow": 9
+
+        return {
+          id: response.id,
+          columns: seatsWithOccupancy.reduce((a, b) => Math.max(a, b.layoutLocation.column), 0),
+          rows: seatsWithOccupancy.reduce((a, b) => Math.max(a, b.layoutLocation.row), 0),
+          seats: seatsWithOccupancy
+        } as HallData;
+      })
+    );
+    return hallData;
   }
 
   getCinemasMock(): Observable<ICinema[]> {
     const cinemas = [
       new Cinema(0, "Wrocław", "Wroclawia"),
-      new Cinema(0, "Wrocław", "Pasaż grunwaldzki"),
-      new Cinema(0, "Warszawa", "Złote tarasy"),
+      new Cinema(1, "Wrocław", "Pasaż grunwaldzki"),
+      new Cinema(2, "Warszawa", "Złote tarasy"),
     ]
     return of(cinemas)
   }
@@ -83,21 +172,34 @@ export class CinemaServiceService implements ICinemaService {
   getAllScreenings(cinemaId: number): Observable<IScreening[]> {
     return this.getAllScreeningsMock(cinemaId);
   }
+
+  getPlayedMovies(cinemaId: number, date: Date ) {
+
+  }
+
   getMoviesWithTheirScreenings(cinemaId: number): Observable<MovieWithScreening[]> {
     return this.getMoviesWithTheirScreeningsMock(cinemaId)
   }
 
+  getScreeningWithId(id: number): Observable<IScreening | undefined> {
+    const result = this.getAllScreeningsMock(1).pipe(
+      map(items => items.find(item => item.id === id))
+    );
+
+    return result;
+  }
+
   private getAllScreeningsMock(cinemaId: number): Observable<IScreening[]> {
     let screenings = [
-      new Screening(0, new Date(), true, cinemaId, 0),
-      new Screening(1, new Date(), false, cinemaId, 0),
-      new Screening(2, new Date(), false, cinemaId, 0),
-      new Screening(3, new Date(), true, cinemaId, 1),
-      new Screening(4, new Date(), false, cinemaId, 1),
-      new Screening(5, new Date(), false, cinemaId, 1),
-      new Screening(6, new Date(), true, cinemaId, 2),
-      new Screening(7, new Date(), false, cinemaId, 2),
-      new Screening(8, new Date(), false, cinemaId, 2),
+      new Screening(0, new Date(), true, cinemaId, 0, 0),
+      new Screening(1, new Date(), false, cinemaId, 0, 1),
+      new Screening(2, new Date(), false, cinemaId, 0, 2),
+      new Screening(3, new Date(), true, cinemaId, 1, 3),
+      new Screening(4, new Date(), false, cinemaId, 1, 4),
+      new Screening(5, new Date(), false, cinemaId, 1, 5),
+      new Screening(6, new Date(), true, cinemaId, 2, 6),
+      new Screening(7, new Date(), false, cinemaId, 2, 7),
+      new Screening(8, new Date(), false, cinemaId, 2, 8),
     ];
 
     return of(screenings);
@@ -150,9 +252,9 @@ export class CinemaServiceService implements ICinemaService {
     let moviesWithScreenings: MovieWithScreening[] = [];
     movies.forEach(element => {
       let screenings = [
-        new Screening(3*element.id, new Date(), true, cinemaId, element.id),
-        new Screening(3*element.id + 1, new Date(), false, cinemaId, element.id),
-        new Screening(3*element.id + 2, new Date(), false, cinemaId, element.id),
+        new Screening(3*element.id, new Date(), true, cinemaId, element.id, 3*element.id),
+        new Screening(3*element.id + 1, new Date(), false, cinemaId, element.id, 3*element.id + 1),
+        new Screening(3*element.id + 2, new Date(), false, cinemaId, element.id, 3*element.id + 2),
       ];
       moviesWithScreenings.push(new MovieWithScreening(element, screenings))
     });

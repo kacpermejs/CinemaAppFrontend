@@ -1,3 +1,30 @@
-<p>
-  ticket-validation-page works!
-</p>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="ticketFormGroup">
+      <mat-form-field>
+        <mat-label>Numer reserwacji</mat-label>
+        <input
+          matInput
+          formControlName="reservationIdCtrl"
+        />
+      </mat-form-field>
+    </form>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" [disabled]="!ticketFormGroup.valid" (click)="checkTicket()">
+      Sprawdź
+    </button>
+  </mat-card-actions>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-content>
+    Details:
+  </mat-card-content>
+</mat-card>
+<br>
+
+
+

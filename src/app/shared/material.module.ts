@@ -18,6 +18,9 @@ import { MatCardModule } from '@angular/material/card';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatSelectModule} from '@angular/material/select';
 import {MatStepperModule} from '@angular/material/stepper';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 @NgModule({
   imports: [
@@ -46,6 +49,8 @@ import {MatStepperModule} from '@angular/material/stepper';
     MatTreeModule,
     MatSelectModule,
     MatStepperModule,
+    MatDatepickerModule,
+    MatPaginatorModule
   ]
 })
 export class SharedMaterialModule {

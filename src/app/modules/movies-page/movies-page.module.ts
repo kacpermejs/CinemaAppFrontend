@@ -5,7 +5,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedMaterialModule } from 'src/app/shared/material.module';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { BookingPageComponent } from './booking/booking-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 const routes: Routes = [
   {
@@ -23,7 +27,12 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     SharedMaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     MoviesPageComponent,

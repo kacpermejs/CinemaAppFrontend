@@ -1,14 +1,18 @@
+import { ISeat, SeatType } from "./ISeat";
 import { Location } from "./Location";
-import { ISeat } from "./ISeat";
+import { Seat } from "./Seat";
 
 
-export class EmptySeatSpace implements ISeat {
-  occupied: boolean;
-  location: Location;
+export class EmptySeatSpace extends Seat {
 
-  constructor() {
-    this.occupied = true;
-    this.location = { row: -1, column: -1 };
+  constructor(layoutRow: number, layoutColumn: number) {
+    super({
+      occupied: true,
+      section: "X",
+      location: {row: -1, column: -1},
+      layoutLocation: {row: layoutRow, column: layoutColumn}
+    } as ISeat);
+    this.type = SeatType.Empty;
   }
 
 }

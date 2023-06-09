@@ -87,11 +87,26 @@ mat-stepper {
   border-radius: 4px;
 }
 
-.step-buttons {
+.list-item-content {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
 }
 
+.list-item-content span {
+  flex-grow: 1;
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 
 /* .hall {

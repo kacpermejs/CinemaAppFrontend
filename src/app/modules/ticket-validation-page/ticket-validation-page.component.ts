@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-ticket-validation-page',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TicketValidationPageComponent implements OnInit {
 
-  constructor() { }
+  ticketFormGroup = this._formBuilder.group({
+    reservationIdCtrl: ['', Validators.required],
+  });
+
+  constructor(private _formBuilder: FormBuilder) { }
 
   ngOnInit() {
+  }
+
+  checkTicket() {
+
   }
 
 }

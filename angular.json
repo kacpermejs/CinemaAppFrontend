@@ -69,7 +69,8 @@
               "browserTarget": "CinemaAppFrontend:build:production"
             },
             "development": {
-              "browserTarget": "CinemaAppFrontend:build:development"
+              "browserTarget": "CinemaAppFrontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

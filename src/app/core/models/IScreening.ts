@@ -7,4 +7,5 @@ export interface IScreening {
   available: boolean;
   movieId: number;
   cinemaId: number;
+  hallId: number;
 }

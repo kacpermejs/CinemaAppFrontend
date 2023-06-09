@@ -15,7 +15,8 @@
           <div class="screen">Ekran</div>
           <div class="cinema-layout-grid">
 
-            <div *ngFor="let row of seats; let rowNum = index" class="cinema-row">
+            <div *ngFor="let row of seatsArray; let rowNum = index" class="cinema-row">
+              <div class="center"><span>{{getRowNum(row)}}</span></div>
               <div *ngFor="let seat of row; let colNum = index">
                 <div *ngIf="isEmptySpace(seat)" class="seat empty-space"></div>
                 <div class="seat"
@@ -28,7 +29,11 @@
                         'double-left': isLoveSeat(seat) && isLoveSeatLeft(seat),
                         'double-right': isLoveSeat(seat) && !isLoveSeatLeft(seat)
                     }">
-                  {{seat.location.row}}, {{seat.location.column}}
+                  <mat-icon *ngIf="isWheelchair(seat)" style="position: relative; opacity: 0.5;">accessible</mat-icon>
+                  <span *ngIf="!isWheelchair(seat) && isSelected(seat)">
+                    {{seat.location.row}}-{{seat.location.column}}
+                  </span>
+
                 </div>
               </div>
             </div>
@@ -37,7 +42,7 @@
       </div>
       <br>
       <div class="step-buttons">
-        <button mat-button matStepperNext>Dalej</button>
+        <button mat-raised-button color="accent" matStepperNext>Dalej</button>
       </div>
     </mat-step>
 
@@ -46,17 +51,25 @@
       Bilety:
       <mat-error *ngIf="!checkSeatSelection()">Brak wybranych miejsc!</mat-error>
       <mat-list class="selected-seats">
-        <mat-list-item *ngFor="let seat of selected" class="ticket">
-          <mat-icon matListItemIcon>receipt</mat-icon>
-          <div>
-            Rząd: {{seat.location.row}}, Miejsce: {{seat.location.column}}
+        <mat-list-item *ngFor="let seat of selectedSeats" class="ticket">
+          <mat-icon matListItemIcon *ngIf="isLoveSeat(seat)">favorite</mat-icon>
+          <mat-icon matListItemIcon *ngIf="isWheelchair(seat)">accessible</mat-icon>
+          <mat-icon matListItemIcon *ngIf="isRegularSeat(seat)">receipt</mat-icon>
+          <div class="list-item-content">
+            <span mat-line>
+              Rząd: {{seat.location.row}}, Miejsce: {{seat.location.column}}, Sekcja: {{seat.section}}
+            </span>
+            <button mat-icon-button (click)="deselect(seat)">
+              <mat-icon>close</mat-icon>
+            </button>
           </div>
+
         </mat-list-item>
       </mat-list>
       <br>
       <div class="step-buttons">
-        <button mat-button matStepperPrevious>Wróć</button>
-        <button mat-button matStepperNext [disabled]="!checkSeatSelection()">Dalej</button>
+        <button mat-raised-button color="accent" matStepperPrevious>Wróć</button>
+        <button mat-raised-button color="accent" matStepperNext [disabled]="!checkSeatSelection()">Dalej</button>
       </div>
     </mat-step>
 
@@ -73,7 +86,7 @@
         </mat-form-field>
       </form>
       <div class="step-buttons">
-        <button mat-button [disabled]="!isStepperValid()" (click)="submit()">Zarezerwuj</button>
+        <button mat-raised-button color="accent" [disabled]="!isStepperValid()" (click)="submit()">Zarezerwuj</button>
       </div>
     </mat-step>
   </mat-stepper>

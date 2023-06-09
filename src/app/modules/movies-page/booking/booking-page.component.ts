@@ -1,11 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Seat } from 'src/app/core/models/Seat';
-import { ISeat } from 'src/app/core/models/ISeat';
+import { ISeat, SeatType } from 'src/app/core/models/ISeat';
 import { LoveSeat } from 'src/app/core/models/LoveSeat';
 import { EmptySeatSpace } from 'src/app/core/models/EmptySeatSpace';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
-import { CinemaServiceService } from 'src/app/core/cinema-service/cinema-service.service';
+import { CinemaServiceService, HallData } from 'src/app/core/cinema-service/cinema-service.service';
+import { Observable, filter, flatMap, map, of, switchMap, tap, toArray } from 'rxjs';
+import { Location } from "src/app/core/models/Location";
+import { ActivatedRoute } from '@angular/router';
+import { WheelchairSeat } from 'src/app/core/models/WheelchairSeat';
+
 
 
 
@@ -16,54 +21,73 @@ import { CinemaServiceService } from 'src/app/core/cinema-service/cinema-service
 })
 export class BookingPageComponent implements OnInit {
 
-  seats: ISeat[][] = [];
-  rows = 6;
-  columns = 12;
+  selectedIds = new Set<number>();
 
-  selected = new Set<ISeat>()
+  hall?: HallData;
+  seatsArray: ISeat[][] = [];
+
+  movieId?: number;
+  screeningId?: number;
 
   @ViewChild('stepper') stepper?: MatStepper;
+
   emailFormGroup = this._formBuilder.group({
     emailCtrl: ['', Validators.required],
   });
 
   constructor(private _formBuilder: FormBuilder,
               private _matStepperIntl: MatStepperIntl,
-              private cinemaService: CinemaServiceService) {
-    for (let r = 0; r < 5; r++) {
-      this.seats.push([]);
-      for (let c = 0; c < 12; c++) {
-        if( c == 2 || c == 9)
-          this.seats[r].push(new EmptySeatSpace())
-        else {
-          if (c<2)
-            this.seats[r].push(new Seat(Math.random() >= 0.5, r, c))
-          else if (c>9)
-            this.seats[r].push(new Seat(Math.random() >= 0.5, r, c-2))
-          else
-            this.seats[r].push(new Seat(Math.random() >= 0.5, r, c-1))
-        }
-          }
-    }
-    //empty row
-    this.seats.push([]);
-    for (let c = 0; c < 12; c++) {
-      this.seats[5].push(new EmptySeatSpace())
-    }
-    //love seats
-    this.seats.push([]);
-    for (let c = 0; c < 12; c++) {
-      if ( (c+1)%2 == 1 )
-        this.seats[6].push(new LoveSeat(Math.random() >= 0.5, 5, c, {row: 5, column: c + 1}))//next
-      else
-        this.seats[6].push(new LoveSeat(this.seats[6][c-1].occupied, 5, c, {row: 5, column: c-1 }))//previous
-    }
+              private cinemaService: CinemaServiceService,
+              private route: ActivatedRoute) {
 
-    console.log(this.seats);
 
   }
 
   ngOnInit() {
+
+    this.route.params.subscribe(params => {
+      this.screeningId = +params['screeningId'];
+      this.movieId = +params['movieId'];
+
+      this.cinemaService.getHallData(this.screeningId).subscribe( hall => {
+        console.log(hall);
+        this.hall = hall;
+
+        const seatsArray: ISeat[][] = Array.from(
+          { length: hall.rows + 1 },
+          () => Array(hall.columns + 1)
+        );
+        // Map the seats data to the 2D array
+        for (let seat of hall.seats) {
+          seatsArray[seat.layoutLocation.row][seat.layoutLocation.column] = seat;
+        }
+        this.seatsArray = seatsArray;
+      });
+
+    });
+
+
+
+  }
+
+  get selectedSeats(): ISeat[] {
+    const selected: ISeat[] = [];
+    if(this.hall?.seats) {
+      for(let seat of this.hall?.seats) {
+        if (this.isSelected(seat)) {
+          selected.push(seat);
+        }
+      }
+    }
+    return selected;
+  }
+
+  isRegularSeat(seat: ISeat): boolean {
+    return seat.type == SeatType.Regular;
+  }
+
+  isWheelchair(seat: ISeat): boolean {
+    return seat instanceof WheelchairSeat;
   }
 
   isLoveSeat(seat: ISeat): boolean {
@@ -75,69 +99,48 @@ export class BookingPageComponent implements OnInit {
   }
 
   isSelected(seat: ISeat): boolean {
-    return this.selected.has(seat);
+    return this.selectedIds.has(seat.id);
   }
 
-  isEmptySpace(seat: ISeat) {
-    return seat instanceof EmptySeatSpace;
+  isEmptySpace(elem: any) {
+    return !(elem ? true : false);
   }
 
   select(seat: ISeat) {
     if (!this.isSelected(seat) && !seat.occupied) {
-      this.selected.add(seat);
+      this.selectedIds.add(seat.id);
     }
   }
 
-  deselect(seat: ISeat) {
-    if (this.isSelected(seat)) {
-      this.selected.delete(seat);
+  deselect(seat: ISeat): boolean {
+    return this.selectedIds.delete(seat.id);
+  }
+
+  getRowNum(row: ISeat[]): number | undefined {
+    return row.find(seat => seat)?.location.row;
+  }
+
+  findSeatByLocationAndSection(location: Location, section: string): ISeat | undefined {
+
+    for (const seat of this.hall?.seats!) {
+      // Check if the seat matches the provided location and section
+      if (seat && seat.location.row === location.row && seat.location.column === location.column && seat.section === section) {
+        return seat; // Return the matched seat
+      }
     }
-  }
-
-  nextSeat(seat: ISeat): ISeat | undefined {
-    let coords = this.findIndexes(seat)
-
-    if(coords) {
-      let row = coords?.[0];
-      let nextCol = coords?.[1] + 1;
-
-      return this.seats[row][nextCol];
-    } else { return undefined; }
-  }
-
-  previousSeat(seat: Seat): ISeat | undefined {
-    let coords = this.findIndexes(seat)
-
-    if(coords) {
-      let row = coords?.[0];
-      let nextCol = coords?.[1] - 1;
-
-      return this.seats[row][nextCol];
-    } else { return undefined; }
-  }
-
-  findIndexes(seat: ISeat): [x: number, y: number] | undefined {
-    const foundItem = this.seats.find(row => row.includes(seat));
-
-    if (foundItem) {
-      const rowIndex = this.seats.findIndex(row => row === foundItem);
-      const columnIndex = foundItem.findIndex(item => item === seat);
-
-      return [rowIndex, columnIndex]
-    } else {
-      return undefined;
-    }
+    return undefined;
   }
 
   seatOnClick(seat: ISeat) {
-
     if (this.isSelected(seat)) {
       if (seat instanceof LoveSeat) {
-        if(seat.connected.column == seat.location.column + 1) {
+        if(seat.connected.column > seat.location.column) {
           this.deselect(seat)
-          this.deselect(this.nextSeat(seat)!)
+          const found = this.findSeatByLocationAndSection(seat.connected, seat.section);
+          found ? this.deselect(found) : console.log("Seat not found");
         } else {
-          this.deselect(this.previousSeat(seat)!)
+          const found = this.findSeatByLocationAndSection(seat.connected, seat.section);
+          found ? this.deselect(found) : console.log("Seat not found");
           this.deselect(seat)
         }
       } else {
@@ -145,11 +148,13 @@ export class BookingPageComponent implements OnInit {
       }
     } else {
       if (seat instanceof LoveSeat) {
-        if(seat.connected.column == seat.location.column + 1) {
+        if(seat.connected.column > seat.location.column) {
           this.select(seat)
-          this.select(this.nextSeat(seat)!)
+          const found = this.findSeatByLocationAndSection(seat.connected, seat.section);
+          found ? this.select(found) : console.log("Seat not found");
         } else {
-          this.select(this.previousSeat(seat)!)
+          const found = this.findSeatByLocationAndSection(seat.connected, seat.section);
+          found ? this.select(found) : console.log("Seat not found");
           this.select(seat)
         }
       } else {
@@ -159,7 +164,7 @@ export class BookingPageComponent implements OnInit {
   }
 
   checkSeatSelection(): boolean {
-    return this.selected.size > 0
+    return this.selectedIds.size > 0
   }
 
   isStepperValid(): boolean {
