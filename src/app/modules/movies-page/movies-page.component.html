@@ -12,7 +12,7 @@
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 <div class="image-gallery">
-  <app-movie-card *ngFor="let movie of movies | async" [movieData]="movie" [screenings]="movie.screenings"></app-movie-card>
+  <app-movie-card *ngFor="let movie of movies" [movieData]="movie" [screenings]="movie.screenings"></app-movie-card>
   <mat-paginator #paginator>
 
   </mat-paginator>

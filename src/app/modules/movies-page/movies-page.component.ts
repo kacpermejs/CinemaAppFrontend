@@ -26,7 +26,7 @@ export class MoviesPageComponent implements OnInit {
   currentPage = 0; // Current page index
   @ViewChild(MatPaginator) paginator?: MatPaginator;
 
-  movies?: Observable<MovieWithScreening[]>;
+  movies: MovieWithScreening[] = [];
 
   // constructor(private cinemaService: CinemaServiceService) {
     //   this.movies = this.cinemaService.getMoviesWithTheirScreenings(1);
@@ -47,7 +47,7 @@ export class MoviesPageComponent implements OnInit {
     //On selection changes - movies need to reload
     this.cinemaService.getSelectedCinema().subscribe( newCinema => {
       this.cinemaId = newCinema?.id;
-      this.loadMovies();
+      this.loadMovies(this.selectedDate.value ? this.selectedDate.value : new Date());
     });
 
   }
@@ -63,17 +63,21 @@ export class MoviesPageComponent implements OnInit {
   //     });
   // }
 
-  private loadMovies() {
+  private loadMovies(date: Date) {
     console.log("CinemaId: " + this.cinemaId);
-    if (this.cinemaId != undefined)
-      this.movies = this.cinemaService.getMoviesWithTheirScreenings(this.cinemaId);
+    if (this.cinemaId != undefined) {
+      this.cinemaService.getMoviesWithTheirScreenings(this.cinemaId, date).subscribe(movies => this.movies = movies);
+      this.cinemaService.getMoviesWithTheirScreenings(this.cinemaId, new Date()).subscribe(console.log);
+      //this.cinemaService.getPlayedMovies(this.cinemaId, new Date()).subscribe(console.log)
+    }
     else
       console.log("No cinema");
   }
 
   onDateChanged() {
     console.log(this.selectedDate.value);
-    this.loadMovies();
+    if(this.selectedDate.value)
+      this.loadMovies(this.selectedDate.value);
   }
 
 }

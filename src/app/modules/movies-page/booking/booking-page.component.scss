@@ -36,7 +36,7 @@ mat-stepper {
         display: flex;
 
         .seat {
-          min-width: 40px;
+          min-height: 40px;
           margin-left: 2px;
           margin-right: 2px;
 
@@ -53,12 +53,14 @@ mat-stepper {
           }
 
           &.double-left {
+            aspect-ratio: unset;
             margin-right: 0px;
             min-width: 42px;
             border-radius: 5px 0 0 5px;
           }
 
           &.double-right {
+            aspect-ratio: unset;
             margin-left: 0px;
             min-width: 42px;
             border-radius: 0 5px 5px 0;

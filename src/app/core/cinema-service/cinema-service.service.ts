@@ -4,13 +4,15 @@ import { BehaviorSubject, Observable, map, of } from 'rxjs';
 import { Screening } from '../models/Screening';
 import { MovieData } from '../models/MovieData';
 import { Cinema, ICinema } from '../models/Cinema';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ISeat, SeatType } from '../models/ISeat';
 import { Location } from '../models/Location';
 import { Seat } from '../models/Seat';
 import { EmptySeatSpace } from '../models/EmptySeatSpace';
 import { WheelchairSeat } from '../models/WheelchairSeat';
 import { LoveSeat } from '../models/LoveSeat';
+
+const publicApiBaseUrl = "http://localhost:8080/api/public"
 
 export class MovieWithScreening implements MovieData {
   id: number;
@@ -24,6 +26,8 @@ export class MovieWithScreening implements MovieData {
   description: string;
 
   screenings: IScreening[] = [];
+
+
 
   constructor(movieData: MovieData, screenings: IScreening[]) {
     this.id = movieData.id;
@@ -50,13 +54,6 @@ export interface HallData {
   seats: ISeat[];
 }
 
-interface ICinemaService {
-  getAllScreenings(cinemaId: number): Observable<IScreening[]>;
-  getMoviesWithTheirScreenings(cinemaId: number): Observable<MovieWithScreening[]>;
-  getCinemas(): Observable<ICinema[]>;
-
-}
-
 function mapSeatType(inputType: any): SeatType {
 
   switch(inputType) {
@@ -74,7 +71,7 @@ function mapSeatType(inputType: any): SeatType {
 @Injectable({
   providedIn: 'root'
 })
-export class CinemaServiceService implements ICinemaService {
+export class CinemaServiceService {
 
   private _cinemaDataSubject = new BehaviorSubject<ICinema | undefined>(undefined);
   private _selectedCinema$: Observable<ICinema | undefined> = this._cinemaDataSubject.asObservable();
@@ -100,7 +97,7 @@ export class CinemaServiceService implements ICinemaService {
 
   getCinemas(): Observable<ICinema[]> {
     //return this.getCinemasMock();
-    return this.http.get<any>("http://localhost:8080/api/cinemas").pipe(
+    return this.http.get<any>(publicApiBaseUrl + "/cinemas").pipe(
       map(response => {
         return response.map((item: any) => {
           return {
@@ -116,7 +113,7 @@ export class CinemaServiceService implements ICinemaService {
 
 
   getHallData(screeningId: number): Observable<HallData> {
-    const hallData = this.http.get<any>("http://localhost:8080/api/all-seats-for?id=" + screeningId).pipe(
+    const hallData = this.http.get<any>(publicApiBaseUrl + "/all-seats-for?id=" + screeningId).pipe(
       map((response: any) => {
         const seatsWithOccupancy = response.seats.map((seatData: any) => {
           const mappedSeat: ISeat = {
@@ -173,12 +170,72 @@ export class CinemaServiceService implements ICinemaService {
     return this.getAllScreeningsMock(cinemaId);
   }
 
-  getPlayedMovies(cinemaId: number, date: Date ) {
+  getPlayedMovies(cinemaId: number, date: Date ): Observable<any> {
+    const params = new HttpParams()
+      .set('page', '0')
+      .set('size', '10')
+      .set('cinemaId', cinemaId.toString())
+      .set('date', date.toISOString().slice(0, 10));
 
+    return this.http.get<any>(publicApiBaseUrl + '/programme', {params} )
   }
 
-  getMoviesWithTheirScreenings(cinemaId: number): Observable<MovieWithScreening[]> {
-    return this.getMoviesWithTheirScreeningsMock(cinemaId)
+  getMoviesWithTheirScreenings(cinemaId: number, date: Date): Observable<MovieWithScreening[]> {
+    //return this.getMoviesWithTheirScreeningsMock(cinemaId)
+    const params = new HttpParams()
+      .set('page', '0')
+      .set('size', '10')
+      .set('cinemaId', cinemaId.toString())
+      .set('date', date.toISOString().slice(0, 10));
+
+    return this.http.get<any>(publicApiBaseUrl + '/programme', {params}).pipe(
+      map((response: any) => {
+        const screeningsByMovie = [];
+
+        // Group screenings by movie ID
+        for (const screening of response.content) {
+          const movieId = screening.film.id;
+          const movieIndex = screeningsByMovie.findIndex(movie => movie.id === movieId);
+          if (movieIndex !== -1) {
+            screeningsByMovie[movieIndex].screenings.push(screening);
+          } else {
+            const movieData = {
+              id: screening.film.id,
+              imageUrl: screening.film.poster,
+              title: screening.film.name,
+              date: new Date(screening.film.premiereDate),
+              durationMinutes: getDurationMinutes(screening.film.duration),
+              age: screening.film.ageLimit,
+              details: [screening.film.director, screening.film.cast],
+              description: screening.film.description,
+              screenings: [screening]
+            };
+            screeningsByMovie.push(movieData);
+          }
+        }
+
+        // Map variable names
+        const mappedScreenings = screeningsByMovie.map(movie => ({
+          id: movie.id,
+          imageUrl: movie.imageUrl,
+          title: movie.title,
+          date: movie.date,
+          durationMinutes: movie.durationMinutes,
+          age: movie.age,
+          details: movie.details,
+          description: movie.description,
+          screenings: movie.screenings.map(screening => ({
+            id: screening.id,
+            date: new Date(screening.date),
+            available: true,//TODO
+            movieId: movie.id,
+            cinemaId: cinemaId,
+          } as IScreening ))
+        }));
+
+        return mappedScreenings;
+      })
+    );
   }
 
   getScreeningWithId(id: number): Observable<IScreening | undefined> {
@@ -262,4 +319,12 @@ export class CinemaServiceService implements ICinemaService {
     return of(moviesWithScreenings);
   }
 
+}
+
+function getDurationMinutes(duration: string): number {
+  // Convert duration string to minutes
+  const [hours, minutes] = duration.split(':');
+  const hoursInMinutes = parseInt(hours, 10) * 60;
+  const minutesInt = parseInt(minutes, 10);
+  return hoursInMinutes + minutesInt;
 }
