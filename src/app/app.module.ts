@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CinemaSelectionComponent } from './core/main-nav/cinema-selection/cinema-selection.component';
 import { HttpClientModule } from '@angular/common/http';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 
 @NgModule({
@@ -38,7 +39,9 @@ import { HttpClientModule } from '@angular/common/http';
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
-    }
+    },
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService
   ],
   bootstrap: [AppComponent]
 })

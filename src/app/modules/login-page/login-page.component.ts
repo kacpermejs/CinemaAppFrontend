@@ -34,9 +34,13 @@ export class LoginPageComponent implements OnInit {
       //! TODO implement login logic
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-      this.auth.login();
+      this.auth.login(username, password).subscribe({
+          next: res => this.router.navigateByUrl(returnUrl),
+          error: err => console.log("show message")
+        }
+      );
 
-      this.router.navigateByUrl(returnUrl);
+
     }
   }
 
