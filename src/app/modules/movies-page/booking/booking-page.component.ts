@@ -10,6 +10,7 @@ import { Observable, filter, flatMap, map, of, switchMap, tap, toArray } from 'r
 import { Location } from "src/app/core/models/Location";
 import { ActivatedRoute } from '@angular/router';
 import { WheelchairSeat } from 'src/app/core/models/WheelchairSeat';
+import { CinemaSelectionService } from 'src/app/core/cinema-selection-service/cinema-selection.service';
 
 
 
@@ -32,11 +33,16 @@ export class BookingPageComponent implements OnInit {
   @ViewChild('stepper') stepper?: MatStepper;
 
   emailFormGroup = this._formBuilder.group({
-    emailCtrl: ['', Validators.required],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    phoneNumber: ['', Validators.required],
+    emailCtrl: ['', Validators.required, Validators.email],
+
   });
 
   constructor(private _formBuilder: FormBuilder,
               private _matStepperIntl: MatStepperIntl,
+              private cinemaSelectionService: CinemaSelectionService,
               private cinemaService: CinemaServiceService,
               private route: ActivatedRoute) {
 
@@ -176,7 +182,7 @@ export class BookingPageComponent implements OnInit {
     //check validity
     if (this.emailFormGroup.valid &&
         this.checkSeatSelection() &&
-        this.cinemaService.isCinemaSet) { //valid
+        this.cinemaSelectionService.isCinemaSet) { //valid
       //reservation post call
       this.makeReservation();
 
@@ -189,7 +195,7 @@ export class BookingPageComponent implements OnInit {
 
   makeReservation() {
     console.log("Making Reservation")
-    const cinema = this.cinemaService.getSelectedCinema();
+    const cinemaId = this.cinemaSelectionService.selectedCinemaId;
   }
 
 }

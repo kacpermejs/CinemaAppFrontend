@@ -109,6 +109,27 @@ mat-stepper {
   gap: 4px;
 }
 
+.final-form {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  min-width: 300px;
+}
+
+.final-step {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  summary {
+    min-width: 300px;
+    flex-grow: 1;
+    margin-bottom: 1rem;
+  }
+}
+
 .center {
   display: flex;
   align-items: center;

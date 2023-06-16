@@ -23,11 +23,7 @@
       <!-- <small class="cinema-label">
         {{selectedCinema}}
       </small> -->
-      <mat-select class="cinema-label" [(ngModel)]="selectedCinema" (selectionChange)="saveCinemaSelection()" placeholder="Wybierz kino" name="cinemaSelection">
-        <mat-option *ngFor="let cinema of cinemas$ | async" [value]="cinema">
-          {{cinema.city}} - {{cinema.name}}
-        </mat-option>
-      </mat-select>
+      <app-cinema-selection class="cinema-label"></app-cinema-selection>
       <!-- <button mat-raised-button color="accent" *ngIf="(selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Zmień</button>
       <button mat-raised-button color="accent" *ngIf="(!selectedCinema) && (isHandset$ | async) === false" (click)="openCinemaDialog()">Wybierz kino</button> -->
       <button mat-raised-button

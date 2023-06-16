@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
+import { CinemaSelectionService } from 'src/app/core/cinema-selection-service/cinema-selection.service';
 import { CinemaServiceService, MovieWithScreening } from 'src/app/core/cinema-service/cinema-service.service';
 
 @Component({
@@ -38,14 +39,17 @@ export class MoviesPageComponent implements OnInit {
 
   cinemaId?: number;
 
-  constructor(private cinemaService: CinemaServiceService) {
+  constructor(
+    private cinemaService: CinemaServiceService,
+    private cinemaSelectionService: CinemaSelectionService
+    ) {
     // Set the minimum to January 1st 20 years in the past and December 31st a year in the future.
     const currentYear = new Date().getFullYear();
     this.minDate = new Date();
     this.maxDate = new Date(currentYear + 1, 11, 31);
 
     //On selection changes - movies need to reload
-    this.cinemaService.getSelectedCinema().subscribe( newCinema => {
+    this.cinemaSelectionService.selectedCinema$.subscribe( newCinema => {
       this.cinemaId = newCinema?.id;
       this.loadMovies(this.selectedDate.value ? this.selectedDate.value : new Date());
     });

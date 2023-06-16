@@ -12,7 +12,7 @@ import { EmptySeatSpace } from '../models/EmptySeatSpace';
 import { WheelchairSeat } from '../models/WheelchairSeat';
 import { LoveSeat } from '../models/LoveSeat';
 
-const publicApiBaseUrl = "http://localhost:8080/api/public"
+export const publicApiBaseUrl = "http://localhost:8080/api/public"
 
 export class MovieWithScreening implements MovieData {
   id: number;
@@ -73,42 +73,15 @@ function mapSeatType(inputType: any): SeatType {
 })
 export class CinemaServiceService {
 
-  private _cinemaDataSubject = new BehaviorSubject<ICinema | undefined>(undefined);
-  private _selectedCinema$: Observable<ICinema | undefined> = this._cinemaDataSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
 
-  setCinema(cinema: ICinema): void {
-    console.log("Cinema has been set!");
-    this._cinemaDataSubject.next(cinema);
+  constructor(private http: HttpClient) {
+
   }
 
-  get isCinemaSet(): boolean {
-    return this._cinemaDataSubject.value ? true : false;
-  }
 
-  getSelectedCinema(): Observable<ICinema | undefined> {
-    if (!this.isCinemaSet) {
-      //TODO load from local storage
-    }
 
-    return this._selectedCinema$; //present or loaded or still undefined
-  }
 
-  getCinemas(): Observable<ICinema[]> {
-    //return this.getCinemasMock();
-    return this.http.get<any>(publicApiBaseUrl + "/cinemas").pipe(
-      map(response => {
-        return response.map((item: any) => {
-          return {
-            id: item.id,
-            name: item.name,
-            city: item.address.city
-          } as ICinema;
-        });
-      })
-    );
-  }
 
 
 

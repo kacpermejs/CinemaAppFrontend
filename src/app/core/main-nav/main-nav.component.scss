@@ -89,6 +89,7 @@ form {
   overflow: hidden !important;
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
+  flex-grow: 1;
 }
 
 .login-button {

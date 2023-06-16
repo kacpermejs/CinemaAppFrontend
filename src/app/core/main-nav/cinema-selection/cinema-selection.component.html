@@ -1,12 +1,5 @@
-<h1 mat-dialog-title>Wybierz kino</h1>
-
-<div mat-dialog-content>
-  <mat-form-field>
-    <input matInput [(ngModel)]="cinemaName" placeholder="Nazwa kina">
-  </mat-form-field>
-</div>
-
-<div mat-dialog-actions>
-  <button mat-button (click)="onClose()">Anuluj</button>
-  <button mat-button (click)="onSave()">Zapisz</button>
-</div>
+<mat-select [formControl]="selectedCinema"
+            (selectionChange)="saveSelection()"
+            placeholder="Wybierz kino">
+  <mat-option *ngFor="let cinema of cinemas" [value]="cinema.id">{{ cinema.name }}</mat-option>
+</mat-select>
