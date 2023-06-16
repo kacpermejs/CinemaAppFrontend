@@ -11,6 +11,8 @@ import { Location } from "src/app/core/models/Location";
 import { ActivatedRoute } from '@angular/router';
 import { WheelchairSeat } from 'src/app/core/models/WheelchairSeat';
 import { CinemaSelectionService } from 'src/app/core/cinema-selection-service/cinema-selection.service';
+import { IReservation } from 'src/app/core/models/Reservation';
+import { BookingService } from 'src/app/core/booking-service/booking.service';
 
 
 
@@ -36,7 +38,7 @@ export class BookingPageComponent implements OnInit {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     phoneNumber: ['', Validators.required],
-    emailCtrl: ['', Validators.required, Validators.email],
+    emailCtrl: ['', Validators.required],
 
   });
 
@@ -44,7 +46,8 @@ export class BookingPageComponent implements OnInit {
               private _matStepperIntl: MatStepperIntl,
               private cinemaSelectionService: CinemaSelectionService,
               private cinemaService: CinemaServiceService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private bookingService: BookingService) {
 
 
   }
@@ -195,7 +198,29 @@ export class BookingPageComponent implements OnInit {
 
   makeReservation() {
     console.log("Making Reservation")
-    const cinemaId = this.cinemaSelectionService.selectedCinemaId;
+    const programmeId = this.screeningId!;
+
+    if (this.emailFormGroup.valid)
+    {
+
+      const reservation: IReservation = {
+        contactData: {
+          firstName: this.emailFormGroup.value.firstName!,
+          lastName: this.emailFormGroup.value.lastName!,
+          email: this.emailFormGroup.value.emailCtrl!,
+          phoneNumber: this.emailFormGroup.value.phoneNumber!
+        },
+        programmeId: programmeId,
+        reservedSeatsIds: Array.from(this.selectedIds)
+      }
+
+      console.log(reservation);
+      this.bookingService.makeReservation(reservation).subscribe({
+        next: res => console.log(res),
+        error: err => console.error(err)
+      })
+
+    }
   }
 
 }
