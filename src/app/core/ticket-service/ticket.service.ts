@@ -1,48 +1,42 @@
 import { Injectable } from '@angular/core';
 import { IScreening } from '../models/IScreening';
 import { ISeat } from '../models/ISeat';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
+import { IReservation } from '../models/Reservation';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthService } from '../auth-service/auth.service';
 
-export interface ITicket {
-  id: number;
-  screeningId: number;
-  seats: ISeat[];
+
+export interface TicketDTO extends IReservation {
+  dateTime: string;
+  film: string;
+  hallName: string;
+  numberOfSeats: number;
 }
-
-export class Ticket implements ITicket {
-  id: number;
-  screeningId: number;
-  seats: ISeat[];
-
-  constructor(id: number, screeningId: number, seats: ISeat[]) {
-    this.id = id
-    this.screeningId = screeningId;
-    this.seats = seats;
-  }
-
-}
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
 
-  private _mockTickets: ITicket[];
+  baseUrl = '/api/usher'
 
-  constructor() {
+  constructor(private http: HttpClient, private auth: AuthService) {
 
-    this._mockTickets = [
-
-    ]
   }
 
-  getTicket(id: number): Observable<ITicket> {
-    return this.getTicketMock(id);
+  getTicket(id: number): Observable<TicketDTO> {
+
+    const headers = this.getHeaders()
+
+    return this.http.get<TicketDTO>(this.baseUrl + '/check-ticket?forId=' + id, {headers: headers});
   }
 
-  getTicketMock(id: number): Observable<ITicket> {
-    return of();
+  private getHeaders(): HttpHeaders {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.auth.getToken()}`
+    });
+    return headers;
   }
 
 }

@@ -19,9 +19,41 @@
   </mat-card-actions>
 </mat-card>
 <br>
-<mat-card>
+<mat-card *ngIf="!success">
   <mat-card-content>
-    Details:
+    Nie znaleziono
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="success">
+  <mat-card-content>
+    <div>
+      Imię: {{ticketData?.contactData?.firstName}}
+    </div>
+    <div>
+      Nazwisko: {{ticketData?.contactData?.lastName}}
+    </div>
+    <div>
+      Email: {{ticketData?.contactData?.email}}
+    </div>
+    <div>
+      Telefon: {{ticketData?.contactData?.phoneNumber}}
+    </div>
+    <div>
+      Data: {{ticketData?.dateTime}}
+    </div>
+    <div>
+      Film: {{ticketData?.film}}
+    </div>
+    <div>
+      Sala: {{ticketData?.hallName}}
+    </div>
+    <div>
+      Liczba miejsc: {{ticketData?.numberOfSeats}}
+    </div>
+    <!-- TODO To nie działa -->
+    <div *ngFor="let seatId of ticketData?.reservedSeatsIds">
+      Miejsce: {{seatId}}
+    </div>
   </mat-card-content>
 </mat-card>
 <br>

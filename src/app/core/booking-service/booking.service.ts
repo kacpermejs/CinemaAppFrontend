@@ -13,8 +13,8 @@ export class BookingService {
 
   constructor(private http: HttpClient) { }
 
-  makeReservation(reservation: IReservation): Observable<IReservation> {
-    return this.http.post<IReservation>(this.apiUrl, reservation);
+  makeReservation(reservation: IReservation): Observable<any> {
+    return this.http.post<any>(this.apiUrl, reservation);
   }
 
 }

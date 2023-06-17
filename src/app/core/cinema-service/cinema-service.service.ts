@@ -12,7 +12,7 @@ import { EmptySeatSpace } from '../models/EmptySeatSpace';
 import { WheelchairSeat } from '../models/WheelchairSeat';
 import { LoveSeat } from '../models/LoveSeat';
 
-export const publicApiBaseUrl = "http://localhost:8080/api/public"
+export const publicApiBaseUrl = "/api/public"
 
 export class MovieWithScreening implements MovieData {
   id: number;

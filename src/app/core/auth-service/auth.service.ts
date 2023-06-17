@@ -9,13 +9,10 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
 
   private _isLoggedIn: boolean = false;
-  private _token: string;
 
-  private url = "http://localhost:8080/api/usher/auth/login"
+  private url = "/api/usher/auth/login"
 
   constructor(private jwtHelper: JwtHelperService, private http: HttpClient) {
-    this._token = localStorage.getItem('token') || '';
-
     if (localStorage.getItem('wasLoggedIn') == "true" && this.isTokenValid()) {
       this._isLoggedIn = true;
     } else {
@@ -32,7 +29,8 @@ export class AuthService {
   }
 
   isTokenValid(): boolean {
-    if (this._token && !this.jwtHelper.isTokenExpired(this._token)) {
+    const token = this.getToken();
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
       // Token is valid
       return true;
     }
@@ -57,7 +55,7 @@ export class AuthService {
   }
 
   getToken(): string {
-    return this._token;
+    return localStorage.getItem('token') || '';
   }
 
   logout() {

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { IReservation } from 'src/app/core/models/Reservation';
+import { TicketDTO, TicketService } from 'src/app/core/ticket-service/ticket.service';
 
 @Component({
   selector: 'app-ticket-validation-page',
@@ -12,13 +14,28 @@ export class TicketValidationPageComponent implements OnInit {
     reservationIdCtrl: ['', Validators.required],
   });
 
-  constructor(private _formBuilder: FormBuilder) { }
+  ticketData?: TicketDTO;
+  success = false;
+
+  constructor(
+    private _formBuilder: FormBuilder,
+    private ticketService: TicketService) { }
 
   ngOnInit() {
   }
 
   checkTicket() {
-
+    this.ticketService.getTicket(+this.ticketFormGroup.value.reservationIdCtrl!).subscribe({
+      next: res => {
+        console.log(res);
+        this.ticketData = res;
+        this.success = true;
+      },
+      error: e => {
+        console.error(e);
+        this.success = false;
+      }
+    });
   }
 
 }
