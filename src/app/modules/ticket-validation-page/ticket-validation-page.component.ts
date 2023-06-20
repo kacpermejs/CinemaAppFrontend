@@ -38,4 +38,9 @@ export class TicketValidationPageComponent implements OnInit {
     });
   }
 
+  onValidate() {
+    if(this.ticketData)
+      this.ticketService.validateTicket(this.ticketData.id).subscribe();
+  }
+
 }

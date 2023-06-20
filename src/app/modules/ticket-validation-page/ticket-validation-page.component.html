@@ -27,6 +27,12 @@
 <mat-card *ngIf="success">
   <mat-card-content>
     <div>
+      Numer rezerwacji: {{ticketData?.id}}
+    </div>
+    <div>
+      Numer rezerwacji: {{ticketData?.reservationStatus}}
+    </div>
+    <div>
       Imię: {{ticketData?.contactData?.firstName}}
     </div>
     <div>
@@ -55,6 +61,11 @@
       Miejsce: {{seatId}}
     </div>
   </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onValidate()">
+      Skasuj
+    </button>
+  </mat-card-actions>
 </mat-card>
 <br>
 
