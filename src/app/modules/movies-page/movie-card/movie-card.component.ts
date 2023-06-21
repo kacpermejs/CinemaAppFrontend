@@ -46,7 +46,7 @@ export class MovieCardComponent implements OnInit {
   }
 
   getTimeString(screening: IScreening) {
-    return screening.date.getHours() + ':' + screening.date.getMinutes();
+    return String(screening.date.getHours()).padStart(2, '0') + ':' + String(screening.date.getMinutes()).padStart(2, '0');
   }
 
   routeToBooking(movieData: MovieData, screeningId: number) {
