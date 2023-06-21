@@ -4,6 +4,7 @@ import { BookingPageComponent } from '../booking/booking-page.component';
 import { MovieData } from '../../../core/models/MovieData';
 import { IScreening } from '../../../core/models/IScreening';
 import { Screening } from '../../../core/models/Screening';
+import { Router } from '@angular/router';
 
 
 export interface MovieCardData {
@@ -37,7 +38,7 @@ export class MovieCardComponent implements OnInit {
   //   description: 'UWAGA: Film jest wyświetlany w wersji oryginalnej bez polskich napisów. Imperator rozkazuje swojemu uczniowi Darthowi Vaderowi odnalezienie Luke\'a Skywalkera, by zmusić go do przejścia na ciemną stronę Mocy.',
   // };
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     console.log(this.screenings)
@@ -46,6 +47,10 @@ export class MovieCardComponent implements OnInit {
 
   getTimeString(screening: IScreening) {
     return screening.date.getHours() + ':' + screening.date.getMinutes();
+  }
+
+  routeToBooking(movieData: MovieData, screeningId: number) {
+    this.router.navigate(['/movies/booking', movieData.id, screeningId], { queryParams: movieData});
   }
 
 }

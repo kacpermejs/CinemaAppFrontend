@@ -27,7 +27,7 @@
               color="primary"
               disabled="{{!screening.available}}"
               class="screening"
-              routerLink="booking/{{movieData?.id}}/{{screening.id}}">
+              (click)="routeToBooking(movieData!, screening.id)">
         {{getTimeString(screening)}}<br>
         <small>
           2D, Napisy

@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Nazwa filmu</mat-card-title>
-    <mat-card-subtitle>godzina | dzień tygodnia | data</mat-card-subtitle>
+    <mat-card-title>{{movieAndScreeningData?.film?.name}}</mat-card-title>
+    <mat-card-subtitle>{{getHour()}} | {{getDayOfTheWeek()}} | {{getDate()}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content></mat-card-content>
 </mat-card>

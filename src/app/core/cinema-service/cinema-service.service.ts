@@ -147,15 +147,9 @@ export class CinemaServiceService {
     return this.http.get<any>(publicApiBaseUrl + '/programme', {params} )
   }
 
-  parseDateToString(date: Date) {
-    return date.getFullYear() + '-' +
-           String(date.getMonth()+1).padStart(2, '0') + '-' +
-           String(date.getDate()).padStart(2, '0')
-  }
-
   getMoviesWithTheirScreenings(cinemaId: number, date: Date, pageSize: number, pageNum: number): Observable<MovieWithScreening[]> {
     //return this.getMoviesWithTheirScreeningsMock(cinemaId)
-    console.log(this.parseDateToString(date))
+    console.log(parseDateToString(date))
 
     const params = new HttpParams()
       .set('page', pageNum.toString())
@@ -204,7 +198,6 @@ export class CinemaServiceService {
             date: new Date(screening.date),
             available: true,//TODO
             movieId: movie.id,
-            cinemaId: cinemaId,
           } as IScreening ))
         }));
 
@@ -213,10 +206,8 @@ export class CinemaServiceService {
     );
   }
 
-  getScreeningWithId(id: number): Observable<IScreening | undefined> {
-    const result = this.getAllScreeningsMock(1).pipe(
-      map(items => items.find(item => item.id === id))
-    );
+  getMovieAndScreeningDataWithId(id: number): Observable<any> {
+    const result = this.http.get<any>(publicApiBaseUrl + '/programme/single?id=' + id)
 
     return result;
   }
@@ -302,4 +293,10 @@ function getDurationMinutes(duration: string): number {
   const hoursInMinutes = parseInt(hours, 10) * 60;
   const minutesInt = parseInt(minutes, 10);
   return hoursInMinutes + minutesInt;
+}
+
+export function parseDateToString(date: Date) {
+  return date.getFullYear() + '-' +
+         String(date.getMonth()+1).padStart(2, '0') + '-' +
+         String(date.getDate()).padStart(2, '0')
 }

@@ -13,6 +13,7 @@ import { WheelchairSeat } from 'src/app/core/models/WheelchairSeat';
 import { CinemaSelectionService } from 'src/app/core/cinema-selection-service/cinema-selection.service';
 import { IReservation } from 'src/app/core/models/Reservation';
 import { BookingService } from 'src/app/core/booking-service/booking.service';
+import { MovieData } from 'src/app/core/models/MovieData';
 
 
 
@@ -31,6 +32,7 @@ export class BookingPageComponent implements OnInit {
 
   movieId?: number;
   screeningId?: number;
+  movieAndScreeningData: any;
 
   @ViewChild('stepper') stepper?: MatStepper;
 
@@ -71,12 +73,43 @@ export class BookingPageComponent implements OnInit {
           seatsArray[seat.layoutLocation.row][seat.layoutLocation.column] = seat;
         }
         this.seatsArray = seatsArray;
+
+        this.cinemaService.getMovieAndScreeningDataWithId(this.screeningId!)
+          .subscribe(e => {
+            this.movieAndScreeningData = e
+            console.log(e);
+          })
       });
 
     });
 
 
 
+  }
+
+  getHour(): string {
+    const date = new Date(this.movieAndScreeningData?.date);
+
+    return String(date.getHours()).padStart(2, '0') + ":" + String(date.getMinutes()).padStart(2, '0');
+  }
+
+  getDayOfTheWeek(): string {
+    const date = new Date(this.movieAndScreeningData?.date);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long'
+    };
+
+    // Get the day of the week in Polish
+    const dayOfWeekPolish = date.toLocaleString('pl-PL', options);
+
+
+    return dayOfWeekPolish || '';
+  }
+
+  getDate(): string {
+    const date = new Date(this.movieAndScreeningData?.date);
+
+    return date.toLocaleDateString('pl-PL') || '';
   }
 
   get selectedSeats(): ISeat[] {
