@@ -70,9 +70,7 @@ export class MoviesPageComponent implements OnInit {
   private loadMovies(date: Date) {
     console.log("CinemaId: " + this.cinemaId);
     if (this.cinemaId != undefined) {
-      this.cinemaService.getMoviesWithTheirScreenings(this.cinemaId, date).subscribe(movies => this.movies = movies);
-      this.cinemaService.getMoviesWithTheirScreenings(this.cinemaId, new Date()).subscribe(console.log);
-      //this.cinemaService.getPlayedMovies(this.cinemaId, new Date()).subscribe(console.log)
+      this.cinemaService.getMoviesWithTheirScreenings(this.cinemaId, date, 100, 0).subscribe(movies => this.movies = movies);
     }
     else
       console.log("No cinema");

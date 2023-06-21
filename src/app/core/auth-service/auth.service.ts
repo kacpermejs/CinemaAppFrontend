@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+export interface TokenDate {
+  token: number;
+  expirationDate: Date
+}
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +19,20 @@ export class AuthService {
 
   constructor(private jwtHelper: JwtHelperService, private http: HttpClient) {
     if (localStorage.getItem('wasLoggedIn') == "true" && this.isTokenValid()) {
-      this._isLoggedIn = true;
+
+      this.validateTokenServerSide().subscribe({
+        next: e => {
+          console.error("success");
+          this._isLoggedIn = true;
+        },
+        error: e => {
+          console.error("fail with");
+          console.error(e);
+          this._isLoggedIn = false;
+        }
+      });
+
+
     } else {
       //TODO navigate to login
 
@@ -22,6 +40,13 @@ export class AuthService {
 
     //if wasn't logged in then do nothing and wait for user to click login
 
+  }
+
+  validateTokenServerSide(): Observable<TokenDate> {
+    console.log("validating server side");
+    const token = this.getToken();
+
+    return this.http.get<TokenDate>('/api/usher/get_expiration_date?token=' + token);
   }
 
   isLoggedIn(): boolean {

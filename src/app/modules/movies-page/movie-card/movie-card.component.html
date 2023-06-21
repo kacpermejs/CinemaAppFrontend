@@ -28,7 +28,7 @@
               disabled="{{!screening.available}}"
               class="screening"
               routerLink="booking/{{movieData?.id}}/{{screening.id}}">
-        17:15<br>
+        {{getTimeString(screening)}}<br>
         <small>
           2D, Napisy
         </small>

@@ -40,7 +40,12 @@ export class MovieCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    console.log(this.screenings)
 
+  }
+
+  getTimeString(screening: IScreening) {
+    return screening.date.getHours() + ':' + screening.date.getMinutes();
   }
 
 }

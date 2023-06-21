@@ -79,12 +79,6 @@ export class CinemaServiceService {
 
   }
 
-
-
-
-
-
-
   getHallData(screeningId: number): Observable<HallData> {
     const hallData = this.http.get<any>(publicApiBaseUrl + "/all-seats-for?id=" + screeningId).pipe(
       map((response: any) => {
@@ -148,18 +142,26 @@ export class CinemaServiceService {
       .set('page', '0')
       .set('size', '10')
       .set('cinemaId', cinemaId.toString())
-      .set('date', date.toISOString().slice(0, 10));
+      .set('date', date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }) );
 
     return this.http.get<any>(publicApiBaseUrl + '/programme', {params} )
   }
 
-  getMoviesWithTheirScreenings(cinemaId: number, date: Date): Observable<MovieWithScreening[]> {
+  parseDateToString(date: Date) {
+    return date.getFullYear() + '-' +
+           String(date.getMonth()+1).padStart(2, '0') + '-' +
+           String(date.getDate()).padStart(2, '0')
+  }
+
+  getMoviesWithTheirScreenings(cinemaId: number, date: Date, pageSize: number, pageNum: number): Observable<MovieWithScreening[]> {
     //return this.getMoviesWithTheirScreeningsMock(cinemaId)
+    console.log(this.parseDateToString(date))
+
     const params = new HttpParams()
-      .set('page', '0')
-      .set('size', '10')
+      .set('page', pageNum.toString())
+      .set('size', pageSize.toString())
       .set('cinemaId', cinemaId.toString())
-      .set('date', date.toISOString().slice(0, 10));
+      .set('date', date.toLocaleDateString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }) );
 
     return this.http.get<any>(publicApiBaseUrl + '/programme', {params}).pipe(
       map((response: any) => {
