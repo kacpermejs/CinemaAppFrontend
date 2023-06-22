@@ -8,7 +8,7 @@ import { MatStepper, MatStepperIntl } from '@angular/material/stepper';
 import { CinemaServiceService, HallData } from 'src/app/core/cinema-service/cinema-service.service';
 import { Observable, filter, flatMap, map, of, switchMap, tap, toArray } from 'rxjs';
 import { Location } from "src/app/core/models/Location";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WheelchairSeat } from 'src/app/core/models/WheelchairSeat';
 import { CinemaSelectionService } from 'src/app/core/cinema-selection-service/cinema-selection.service';
 import { IReservation } from 'src/app/core/models/Reservation';
@@ -49,6 +49,7 @@ export class BookingPageComponent implements OnInit {
               private cinemaSelectionService: CinemaSelectionService,
               private cinemaService: CinemaServiceService,
               private route: ActivatedRoute,
+              private router: Router,
               private bookingService: BookingService) {
 
 
@@ -249,8 +250,16 @@ export class BookingPageComponent implements OnInit {
 
       console.log(reservation);
       this.bookingService.makeReservation(reservation).subscribe({
-        next: res => console.log(res),
-        error: err => console.error(err)
+        next: res => {
+          console.log(res)
+          this.router.navigate(['/movies/booking/result', res.reservationId])
+
+        },
+        error: err => {
+          console.error(err)
+          const queryParams = {errorMessage: 'Coś poszło nie tak!'}
+          this.router.navigate(['/movies/booking/result', -1], {queryParams})
+        }
       })
 
     }

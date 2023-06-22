@@ -1,0 +1,9 @@
+<div *ngIf="!isError" class="centring">
+  <h2>Twój numer rezerwacji:</h2>
+  <div class="reservation-id">{{reservationId}}</div>
+</div>
+
+<div *ngIf="isError" class="centring">
+  <h2>Wystąpił błąd:</h2>
+  <div class="reservation-id">{{errorMessage}}</div>
+</div>

@@ -46,9 +46,9 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="'push'">
       <mat-nav-list>
-        <a routerLink="/home" routerLinkActive="active" mat-list-item>Strona główna</a>
-        <a routerLink="/movies" routerLinkActive="active" mat-list-item>Repertuar</a>
-        <a routerLink="/contact" routerLinkActive="active" mat-list-item>Kontakt</a>
+        <a routerLink="/home" routerLinkActive="active" mat-list-item (click)="closeSidenav()">Strona główna</a>
+        <a routerLink="/movies" routerLinkActive="active" mat-list-item (click)="closeSidenav()">Repertuar</a>
+        <a routerLink="/contact" routerLinkActive="active" mat-list-item (click)="closeSidenav()">Kontakt</a>
         <a *ngIf="auth.isLoggedIn()"
            routerLink="/ticket-validation"
            routerLinkActive="active"
@@ -59,7 +59,8 @@
         <button mat-raised-button
                 class="login-button"
                 color="accent"
-                (click)="auth.isLoggedIn() ? auth.logout() : router.navigate(['/login'])">
+                style="margin-top: 0.5rem"
+                (click)="onLoginLogout()">
           {{auth.isLoggedIn() ? 'Logout' : 'Login'}}
         </button>
       </mat-nav-list>

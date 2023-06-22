@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { BookingResultComponent } from './booking-result/booking-result.component';
 
 const routes: Routes = [
   {
@@ -17,9 +18,13 @@ const routes: Routes = [
     component: MoviesPageComponent
   },
   {
+    path: 'booking/result/:reservationId',
+    component: BookingResultComponent
+  },
+  {
     path: 'booking/:movieId/:screeningId',
     component: BookingPageComponent
-  }
+  },
 ];
 
 @NgModule({
@@ -37,7 +42,8 @@ const routes: Routes = [
   declarations: [
     MoviesPageComponent,
     MovieCardComponent,
-    BookingPageComponent
+    BookingPageComponent,
+    BookingResultComponent
   ]
 })
 export class MoviesPageModule { }

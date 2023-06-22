@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { Cinema, ICinema } from '../models/Cinema';
 import { CinemaServiceService } from '../cinema-service/cinema-service.service';
 import { CinemaSelectionService } from '../cinema-selection-service/cinema-selection.service';
+import { MatSidenav } from '@angular/material/sidenav';
 
 
 @Component({
@@ -18,6 +19,8 @@ import { CinemaSelectionService } from '../cinema-selection-service/cinema-selec
   styleUrls: ['./main-nav.component.scss']
 })
 export class MainNavComponent implements OnInit {
+
+  @ViewChild(MatSidenav) sidenav?: MatSidenav;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -34,8 +37,15 @@ export class MainNavComponent implements OnInit {
 
   ngOnInit(): void {
 
+  }
 
+  onLoginLogout() {
+    this.auth.isLoggedIn() ? this.auth.logout() : this.router.navigate(['/login']);
+    this.closeSidenav();
+  }
 
+  closeSidenav(): void {
+    this.sidenav?.close();
   }
 
 }

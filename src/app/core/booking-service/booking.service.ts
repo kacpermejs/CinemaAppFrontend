@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import { IReservation } from '../models/Reservation';
 import { HttpClient } from '@angular/common/http';
 
+export interface ReservationResult {
+  reservationId: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +17,8 @@ export class BookingService {
 
   constructor(private http: HttpClient) { }
 
-  makeReservation(reservation: IReservation): Observable<any> {
-    return this.http.post<any>(this.apiUrl, reservation);
+  makeReservation(reservation: IReservation): Observable<ReservationResult> {
+    return this.http.post<ReservationResult>(this.apiUrl, reservation);
   }
 
 }
