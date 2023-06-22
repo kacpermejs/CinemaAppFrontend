@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IScreening } from '../models/IScreening';
 import { BehaviorSubject, Observable, map, of } from 'rxjs';
-import { Screening } from '../models/Screening';
+//import { Screening } from '../models/Screening';
 import { MovieData } from '../models/MovieData';
 import { Cinema, ICinema } from '../models/Cinema';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -133,10 +133,6 @@ export class CinemaServiceService {
     return of(cinemas)
   }
 
-  getAllScreenings(cinemaId: number): Observable<IScreening[]> {
-    return this.getAllScreeningsMock(cinemaId);
-  }
-
   getPlayedMovies(cinemaId: number, date: Date ): Observable<any> {
     const params = new HttpParams()
       .set('page', '0')
@@ -175,16 +171,20 @@ export class CinemaServiceService {
               date: new Date(screening.film.premiereDate),
               durationMinutes: getDurationMinutes(screening.film.duration),
               age: screening.film.ageLimit,
-              details: [screening.film.director, screening.film.cast],
+              details: [screening.film.genre, screening.film.cast, ],
               description: screening.film.description,
-              screenings: [screening]
+              screenings: [screening],
+
+              languageType: screening.film.languageType,
+              screenType: screening.film.screenType,
+              price: screening.film.price,
             };
             screeningsByMovie.push(movieData);
           }
         }
 
         // Map variable names
-        const mappedScreenings = screeningsByMovie.map(movie => ({
+        const mappedScreenings: MovieWithScreening[] = screeningsByMovie.map(movie => ({
           id: movie.id,
           imageUrl: movie.imageUrl,
           title: movie.title,
@@ -198,8 +198,11 @@ export class CinemaServiceService {
             date: new Date(screening.date),
             available: true,//TODO
             movieId: movie.id,
+            languageType: movie.languageType,
+            screenType: movie.screenType,
+            price: movie.price
           } as IScreening ))
-        }));
+        } as MovieWithScreening));
 
         return mappedScreenings;
       })
@@ -210,22 +213,6 @@ export class CinemaServiceService {
     const result = this.http.get<any>(publicApiBaseUrl + '/programme/single?id=' + id)
 
     return result;
-  }
-
-  private getAllScreeningsMock(cinemaId: number): Observable<IScreening[]> {
-    let screenings = [
-      new Screening(0, new Date(), true, cinemaId, 0, 0),
-      new Screening(1, new Date(), false, cinemaId, 0, 1),
-      new Screening(2, new Date(), false, cinemaId, 0, 2),
-      new Screening(3, new Date(), true, cinemaId, 1, 3),
-      new Screening(4, new Date(), false, cinemaId, 1, 4),
-      new Screening(5, new Date(), false, cinemaId, 1, 5),
-      new Screening(6, new Date(), true, cinemaId, 2, 6),
-      new Screening(7, new Date(), false, cinemaId, 2, 7),
-      new Screening(8, new Date(), false, cinemaId, 2, 8),
-    ];
-
-    return of(screenings);
   }
 
   private getMoviesMock(cinemaId: number): MovieData[] {
@@ -266,23 +253,6 @@ export class CinemaServiceService {
     };
 
     return [starWars0, starWars1, starWars2];
-  }
-
-  private getMoviesWithTheirScreeningsMock(cinemaId: number): Observable<MovieWithScreening[]> {
-
-    let movies: MovieData[] = this.getMoviesMock(cinemaId)
-
-    let moviesWithScreenings: MovieWithScreening[] = [];
-    movies.forEach(element => {
-      let screenings = [
-        new Screening(3*element.id, new Date(), true, cinemaId, element.id, 3*element.id),
-        new Screening(3*element.id + 1, new Date(), false, cinemaId, element.id, 3*element.id + 1),
-        new Screening(3*element.id + 2, new Date(), false, cinemaId, element.id, 3*element.id + 2),
-      ];
-      moviesWithScreenings.push(new MovieWithScreening(element, screenings))
-    });
-
-    return of(moviesWithScreenings);
   }
 
 }

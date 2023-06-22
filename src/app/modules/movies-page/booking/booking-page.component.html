@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{movieAndScreeningData?.film?.name}}</mat-card-title>
+    <mat-card-title>{{movieAndScreeningData?.film?.name}} {{getScreenType()}} {{movieAndScreeningData?.film?.languageType}}</mat-card-title>
     <mat-card-subtitle>{{getHour()}} | {{getDayOfTheWeek()}} | {{getDate()}}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content></mat-card-content>
@@ -111,7 +111,25 @@
           </mat-form-field>
         </form>
         <summary>
-          Summary:
+
+          <mat-list>
+            <div mat-subheader>Podsumowanie:</div>
+            <mat-divider></mat-divider>
+            <mat-list-item *ngFor="let seat of selectedSeats">
+              <div>
+                <mat-icon matListItemIcon>receipt</mat-icon>
+                <span mat-line>
+                  Bilet normalny: {{getPrice()}}zł
+                </span>
+              </div>
+
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              Razem: {{getSummedPrice()}}
+            </mat-list-item>
+          </mat-list>
+
         </summary>
       </div>
       <div class="step-buttons">

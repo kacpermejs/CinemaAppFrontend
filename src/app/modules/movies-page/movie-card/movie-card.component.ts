@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingPageComponent } from '../booking/booking-page.component';
 import { MovieData } from '../../../core/models/MovieData';
 import { IScreening } from '../../../core/models/IScreening';
-import { Screening } from '../../../core/models/Screening';
+//import { Screening } from '../../../core/models/Screening';
 import { Router } from '@angular/router';
 
 
@@ -50,7 +50,23 @@ export class MovieCardComponent implements OnInit {
   }
 
   routeToBooking(movieData: MovieData, screeningId: number) {
-    this.router.navigate(['/movies/booking', movieData.id, screeningId], { queryParams: movieData});
+    this.router.navigate(['/movies/booking', movieData.id, screeningId]);
+    //this.router.navigate(['/movies/booking', movieData.id, screeningId], { queryParams: movieData});
   }
 
+  getScreenType(screenType: string) {
+    return parseScreenType(screenType);
+  }
+
+}
+
+export function parseScreenType(screenType: string) {
+  switch (screenType) {
+    case 'SCREEN_2D':
+      return '2D';
+    case 'SCREEN_3D':
+      return '3D';
+    default:
+      return screenType;
+  }
 }

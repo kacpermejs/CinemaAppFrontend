@@ -17,6 +17,9 @@
         </div>
 
       </div>
+      <div>
+        {{movieData?.durationMinutes}} minut
+      </div>
     </mat-card-subtitle>
     <mat-card-content>{{ movieData?.description }}</mat-card-content>
     <div class="content-spacer"></div>
@@ -30,7 +33,7 @@
               (click)="routeToBooking(movieData!, screening.id)">
         {{getTimeString(screening)}}<br>
         <small>
-          2D, Napisy
+          {{getScreenType(screening.screenType)}}, {{screening.languageType}}
         </small>
       </button>
     </div>

@@ -6,4 +6,7 @@ export interface IScreening {
   movieId: number;
   cinemaId: number;
   hallId: number;
+  languageType: string;
+  screenType: string;
+  price: number;
 }

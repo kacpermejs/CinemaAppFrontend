@@ -14,6 +14,7 @@ import { CinemaSelectionService } from 'src/app/core/cinema-selection-service/ci
 import { IReservation } from 'src/app/core/models/Reservation';
 import { BookingService } from 'src/app/core/booking-service/booking.service';
 import { MovieData } from 'src/app/core/models/MovieData';
+import { parseScreenType } from '../movie-card/movie-card.component';
 
 
 
@@ -111,6 +112,19 @@ export class BookingPageComponent implements OnInit {
     const date = new Date(this.movieAndScreeningData?.date);
 
     return date.toLocaleDateString('pl-PL') || '';
+  }
+
+  getScreenType() {
+    const type = this.movieAndScreeningData?.film?.screenType;
+    return parseScreenType(type);
+  }
+
+  getPrice(): number {
+    return +this.movieAndScreeningData?.film?.price;
+  }
+
+  getSummedPrice(): number {
+    return this.selectedIds.size * this.getPrice();
   }
 
   get selectedSeats(): ISeat[] {
